@@ -14,9 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *dtlImageView;
 
-
-@property(nonatomic,assign) NSString *documentKey;//1104
-@property(nonatomic,assign) NSString *documentImageName;//1104
-
+@property(nonatomic,assign) NSString *documentKey;
+@property(nonatomic,assign) NSString *documentImageName;
 
 @end

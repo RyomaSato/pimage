@@ -7,7 +7,7 @@
 //
 
 #import "DetailViewController.h"
-#import "ViewController.h"//1104
+#import "ViewController.h"
 
 @interface DetailViewController ()
 
@@ -15,29 +15,14 @@
 
 @implementation DetailViewController{
 
-   //NSDictionary *historyData;//1104(削除の時に使用)document
-    
+   
 }
-
-
-///////////////////////////1104//////////////////////////////////
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-/////////////////////////////////////////////////////////////////
-
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.    
        
-/////////////////////////////////////1104/////////////////////////////////////////////
     NSString *FileName = self.documentImageName;
     
     // Documentsディレクトリに保存
@@ -51,7 +36,7 @@
     UIImage *image = [[UIImage alloc] initWithData:data];
     
     self.dtlImageView.image = image;
-///////////////////////////////////////////////////////////////////////////////////////
+
 }
     
 - (void)didReceiveMemoryWarning {
