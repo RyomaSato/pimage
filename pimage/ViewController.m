@@ -16,6 +16,7 @@
 @implementation ViewController{
 
     NSDictionary *documentData;
+    //NSMutableDictionary *documentData;
     UITableViewCell *documentcell;//1107/ユーザデフォルト更新(途中)
     NSIndexPath *longtapIndex;//1108/ユーザデフォルト更新(途中)
     
@@ -157,10 +158,27 @@
     
     NSMutableDictionary *ret_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
     
-    //dectionaryの階層追加
-
+    
+    
+    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];//1111
+    
+    
+    [second_dictionary setObject:FileName forKey:@"FileName"];//1111
+    
+    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
+    
+    [ret_dictionary setObject:second_dictionary forKey:strNowKey];//1111
+    
+    
     //現在時刻をキーに指定し、documentデータに保存
-    [ret_dictionary setObject:FileName forKey:strNowKey];
+  //  [ret_dictionary setObject:FileName forKey:strNowKey];
+
+   
+    //dectionaryの階層追加//1110
+//    [ret_dictionary setObject:FileName forKey:FileName];//filename
+//  //  [ret_dictionary setObject:strNowKey forKey:@"FileName"];
+//    [ret_dictionary setObject:strNowKey forKey:@"displayname"];//displayname
+
     
     documentData = ret_dictionary;
     
@@ -169,7 +187,7 @@
 
     // モーダルビューを閉じる
     [self dismissViewControllerAnimated:NO completion:nil];
-    
+
     // カメラが使用可能かどうか判定する
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return;
@@ -222,9 +240,16 @@
     
     //行に配列の文字列を表示
     NSArray *keys = [documentData allKeys];
-    NSString *strKey = [keys objectAtIndex:indexPath.row];
+ //   NSDictionary *second_dictionary = [documentData allKeys];//1111
+
+    //   NSString *strKey = [keys objectAtIndex:indexPath.row];
+    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:indexPath.row]];//1111
+ //   NSDictionary *ret_dictionary = [keys objectAtIndex:indexPath.row];//1110
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",strKey];
+    NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
+    
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",displayName];
    
     return cell;
 }
@@ -294,11 +319,15 @@
     NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
     
     NSArray *keys = [documentData allKeys];
-    NSString *strKey = [keys objectAtIndex:selectindex];
-    NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
+//    NSString *strKey = [keys objectAtIndex:selectindex];
+//    NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
+    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:selectindex]];//1111
+
+    NSString *FileName = [second_dictionary objectForKey:@"FileName"];//1111
     
-    dvc.documentKey = strKey;
-    dvc.documentImageName = imgname;
+    
+    dvc.documentKey = [keys objectAtIndex:selectindex];
+    dvc.documentImageName = FileName;
     
 }
 
@@ -357,20 +386,34 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];//取得
         
         documentData = [defaults dictionaryForKey:@"documentData"];
+
         
         NSMutableDictionary *ret_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+
         
         NSArray *keys = [documentData allKeys];
-        NSString *strKey = [[keys objectAtIndex:longtapIndex.row] mutableCopy];
-        NSString *FileName = [ret_dictionary objectForKey:strKey];
+        // NSString *strKey = [[keys objectAtIndex:longtapIndex.row] mutableCopy];
+        // NSString *FileName = [ret_dictionary objectForKey:strKey];
+    //    NSMutableDictionary *second_dictionary = [keys objectAtIndex:longtapIndex.row];//1110
+        
+        NSMutableDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:longtapIndex.row]];//1111
 
-        strKey = [[alertView textFieldAtIndex:0] text];
-        FileName = [NSString stringWithFormat:@"%@.jpg",strKey];
+        NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1110
         
-        [ret_dictionary setObject:FileName forKey:strKey];
+        displayName = [[alertView textFieldAtIndex:0] text];
+        //strKey = [[alertView textFieldAtIndex:0] text];
+        //FileName = [NSString stringWithFormat:@"%@.jpg",strKey];
         
-        documentData = ret_dictionary;
+        [second_dictionary setObject:displayName forKey:@"displayName"];
         
+
+        [ret_dictionary setObject:second_dictionary forKey:[keys objectAtIndex:longtapIndex.row]];
+  //      [[keys objectAtIndex:longtapIndex.row] setObject:second_dictionary forKey:@"second_dictionary"];
+
+       
+        
+        documentData =ret_dictionary;
+
         [defaults setObject:documentData forKey:@"documentData"];
         
         [defaults synchronize];
