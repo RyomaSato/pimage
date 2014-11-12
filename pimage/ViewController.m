@@ -16,9 +16,8 @@
 @implementation ViewController{
 
     NSDictionary *documentData;
-    //NSMutableDictionary *documentData;
-    UITableViewCell *documentcell;//1107/ユーザデフォルト更新(途中)
-    NSIndexPath *longtapIndex;//1108/ユーザデフォルト更新(途中)
+    UITableViewCell *documentcell;//1107/ユーザデフォルト更新
+    NSIndexPath *longtapIndex;//1108/ユーザデフォルト更新
     
 }
 
@@ -123,7 +122,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;{
     
     NSLog(@"画像選択");
-    
+   
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
    
     // 渡されてきた画像をフォトアルバムに保存
@@ -148,39 +147,23 @@
     [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
     NSString *strNowKey = [dfkey stringFromDate:now];
     
-    NSString *FileName = [NSString stringWithFormat:@"%@.jpg",strNow];
+    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",strNow];
     
     // Documentsディレクトリに保存
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSLog(@"%@",path);
     
-    [data writeToFile:[path stringByAppendingPathComponent:FileName] atomically:YES];
+    [data writeToFile:[path stringByAppendingPathComponent:fileName] atomically:YES];
     
-    NSMutableDictionary *ret_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-    
-    
-    
+    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
     NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];//1111
     
-    
-    [second_dictionary setObject:FileName forKey:@"FileName"];//1111
-    
+    [second_dictionary setObject:fileName forKey:@"fileName"];//1111
     [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
     
-    [ret_dictionary setObject:second_dictionary forKey:strNowKey];//1111
+    [first_dictionary setObject:second_dictionary forKey:strNowKey];//1111
     
-    
-    //現在時刻をキーに指定し、documentデータに保存
-  //  [ret_dictionary setObject:FileName forKey:strNowKey];
-
-   
-    //dectionaryの階層追加//1110
-//    [ret_dictionary setObject:FileName forKey:FileName];//filename
-//  //  [ret_dictionary setObject:strNowKey forKey:@"FileName"];
-//    [ret_dictionary setObject:strNowKey forKey:@"displayname"];//displayname
-
-    
-    documentData = ret_dictionary;
+    documentData = first_dictionary;
     
     [defaults setObject:documentData forKey:@"documentData"];
     [defaults synchronize];
@@ -188,11 +171,12 @@
     // モーダルビューを閉じる
     [self dismissViewControllerAnimated:NO completion:nil];
 
+    
+    
     // カメラが使用可能かどうか判定する
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return;
     }
-    
     
     // UIImagePickerControllerのインスタンスを生成
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
@@ -240,14 +224,8 @@
     
     //行に配列の文字列を表示
     NSArray *keys = [documentData allKeys];
- //   NSDictionary *second_dictionary = [documentData allKeys];//1111
-
-    //   NSString *strKey = [keys objectAtIndex:indexPath.row];
     NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:indexPath.row]];//1111
- //   NSDictionary *ret_dictionary = [keys objectAtIndex:indexPath.row];//1110
-    
     NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
-    
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@",displayName];
    
@@ -265,7 +243,7 @@
         
         documentData = [defaults dictionaryForKey:@"documentData"];
         
-        NSMutableDictionary *ret_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
         
         
         
@@ -274,9 +252,9 @@
         NSString *strKey = [keys objectAtIndex:selectindex];
         NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
         
-        [ret_dictionary removeObjectForKey:strKey];
+        [first_dictionary removeObjectForKey:strKey];
         
-        documentData = ret_dictionary;
+        documentData = first_dictionary;
         
         [defaults setObject:documentData forKey:@"documentData"];
         [defaults synchronize];
@@ -286,11 +264,11 @@
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
         // 削除したいファイルのパスを作成
-        NSString *FileName = imgname;
+        NSString *fileName = imgname;
         // Documentsディレクトリに保存
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
         
-        NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,FileName];
+        NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
         
         
         NSError *error;
@@ -319,15 +297,11 @@
     NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
     
     NSArray *keys = [documentData allKeys];
-//    NSString *strKey = [keys objectAtIndex:selectindex];
-//    NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
     NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:selectindex]];//1111
-
-    NSString *FileName = [second_dictionary objectForKey:@"FileName"];//1111
-    
+    NSString *fileName = [second_dictionary objectForKey:@"fileName"];//1111
     
     dvc.documentKey = [keys objectAtIndex:selectindex];
-    dvc.documentImageName = FileName;
+    dvc.documentImageName = fileName;
     
 }
 
@@ -349,19 +323,12 @@
         [message show];
         
         // UILongPressGestureRecognizerからlocationInView:を使ってタップした場所のCGPointを取得する
-        CGPoint p = [gestureRecognizer locationInView:self.documentListTableView];
+        CGPoint longPressPoint = [gestureRecognizer locationInView:self.documentListTableView];
         // 取得したCGPointを利用して、indexPathForRowAtPoint:でタップした場所のNSIndexPathを取得する
-    //    NSIndexPath *indexPath = [self.documentListTableView indexPathForRowAtPoint:p];
-       
-        longtapIndex = [self.documentListTableView indexPathForRowAtPoint:p];///ユーザデフォルト更新(途中)
-        
-        
+        longtapIndex = [self.documentListTableView indexPathForRowAtPoint:longPressPoint];
         // NSIndexPathを利用して、cellForRowAtIndexPath:で該当でUITableViewCellを取得する
-       // documentcell = [self.documentListTableView cellForRowAtIndexPath:indexPath];
-        
-        documentcell = [self.documentListTableView cellForRowAtIndexPath:longtapIndex];///ユーザデフォルト更新(途中)
+        documentcell = [self.documentListTableView cellForRowAtIndexPath:longtapIndex];///ユーザデフォルト更新
 
-        
     }else if([gestureRecognizer state] == UIGestureRecognizerStateEnded){
          NSLog(@"longtapended");
         
@@ -378,49 +345,29 @@
         
         NSLog(@"text=%@",[[alertView textFieldAtIndex:0] text]);
       
-        
-        documentcell.textLabel.text = [[alertView textFieldAtIndex:0] text];
-        
-
-///////////////////////////////////////////////////ユーザデフォルト更新(途中)
+        //ユーザデフォルトの更新
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];//取得
         
         documentData = [defaults dictionaryForKey:@"documentData"];
 
-        
-        NSMutableDictionary *ret_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-
+        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
         
         NSArray *keys = [documentData allKeys];
-        // NSString *strKey = [[keys objectAtIndex:longtapIndex.row] mutableCopy];
-        // NSString *FileName = [ret_dictionary objectForKey:strKey];
-    //    NSMutableDictionary *second_dictionary = [keys objectAtIndex:longtapIndex.row];//1110
-        
-        NSMutableDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:longtapIndex.row]];//1111
-
+        NSDictionary *temp_second_dictionary = [first_dictionary objectForKey:[keys objectAtIndex:longtapIndex.row]];//1112
+        NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;//temp_second_dictionaryをmutableとしてコピー
         NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1110
         
         displayName = [[alertView textFieldAtIndex:0] text];
-        //strKey = [[alertView textFieldAtIndex:0] text];
-        //FileName = [NSString stringWithFormat:@"%@.jpg",strKey];
         
         [second_dictionary setObject:displayName forKey:@"displayName"];
-        
-
-        [ret_dictionary setObject:second_dictionary forKey:[keys objectAtIndex:longtapIndex.row]];
-  //      [[keys objectAtIndex:longtapIndex.row] setObject:second_dictionary forKey:@"second_dictionary"];
-
-       
-        
-        documentData =ret_dictionary;
+        [first_dictionary setObject:second_dictionary forKey:[keys objectAtIndex:longtapIndex.row]];
+ 
+        documentData =first_dictionary;
 
         [defaults setObject:documentData forKey:@"documentData"];
-        
         [defaults synchronize];
         
-        
-////////////////////////////////////////////////////////////////////////
-        
+        documentcell.textLabel.text = [[alertView textFieldAtIndex:0] text];
         
     }else if(buttonIndex == 0){
     

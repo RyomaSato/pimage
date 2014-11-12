@@ -22,23 +22,56 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.    
-       
-    NSString *FileName = self.documentImageName;
-    
+    NSString *fileName = self.documentImageName;
     // Documentsディレクトリに保存
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    
-    NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,FileName];
-
+    NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
     //データの読み込み
     NSData *data = [NSData dataWithContentsOfFile:FullPath];
     //画像の作成
     UIImage *image = [[UIImage alloc] initWithData:data];
     
     self.dtlImageView.image = image;
-
-}
     
+    
+    
+////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm（仮）mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+//    //ロングタップのジェスチャー生成
+//    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+//    [self.dtlImageView addGestureRecognizer:longPressGesture];
+//    
+//    longPressGesture.minimumPressDuration = 0.8;//ロングプレス認識のための時間(s)
+////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+    
+}
+
+
+
+
+////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm（仮）mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+//- (void) handleLongPressGesture:(UILongPressGestureRecognizer *)gestureRecognizer{
+//    
+//    if([gestureRecognizer state] == UIGestureRecognizerStateBegan){
+//        NSLog(@"longtapbegan");
+//        
+//        // UILongPressGestureRecognizerからlocationInView:を使ってタップした場所のCGPointを取得する
+//        CGPoint longPressPoint = [gestureRecognizer locationInView:self.dtlImageView];
+//        
+//        NSLog(@"touchedPoint x:[%f]", longPressPoint.x);
+//        NSLog(@"touchedPoint y:[%f]", longPressPoint.y);
+//        
+//    }else if([gestureRecognizer state] == UIGestureRecognizerStateEnded){
+//        NSLog(@"longtapended");
+//        
+//        
+//    }
+//}
+////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
