@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIAlertViewDelegate>
+@interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIAlertViewDelegate>{
+
+ BOOL _takePictureFlag;
+
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *documentListTableView;
+
+
 
 @end
 

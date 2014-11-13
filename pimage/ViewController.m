@@ -14,8 +14,11 @@
 @end
 
 @implementation ViewController{
+    
+    NSInteger i;//1113(try)
 
     NSDictionary *documentData;
+    NSDictionary *folder;//1113(try)
     UITableViewCell *documentcell;//1107/ユーザデフォルト更新
     NSIndexPath *longtapIndex;//1108/ユーザデフォルト更新
     
@@ -23,11 +26,21 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    documentData =[defaults dictionaryForKey:@"documentData"];
+//    
+//    [self.documentListTableView reloadData];
+
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    documentData =[defaults dictionaryForKey:@"documentData"];
+    folder =[defaults dictionaryForKey:@"folder"];
     
     [self.documentListTableView reloadData];
+    
+    //ToolBarを表示する
+    [self.navigationController setToolbarHidden:NO animated:NO];//1113
     
 }
 
@@ -52,6 +65,8 @@
     [self.documentListTableView addGestureRecognizer:longPressGesture];
     
      longPressGesture.minimumPressDuration = 0.8;//ロングプレス認識のための時間(s)
+    
+    _takePictureFlag = NO;
     
 }
 
@@ -122,13 +137,12 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;{
     
     NSLog(@"画像選択");
-   
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
    
     // 渡されてきた画像をフォトアルバムに保存
     //UIImageWriteToSavedPhotosAlbum(image, self, @selector(targetImage:didFinishSavingWithError:contextInfo:), NULL);
 
-    
     //撮影した画像を取得
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
@@ -137,17 +151,31 @@
     // PNGデータとしてNSDataを作成
     //NSData *data = UIImagePNGRepresentation(image);
     
-    
+////////////////////////////////////////////////////(仮)11/14_2:38
     NSDate *now = [NSDate date];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *strNow = [df stringFromDate:now];
+
+    i = i + 1;
     
-    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
-    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
-    NSString *strNowKey = [dfkey stringFromDate:now];
+    NSString *fileName = [NSString stringWithFormat:@"img%@.jpg", strNow];
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
+//    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
+//    NSString *strNowKey = [dfkey stringFromDate:now];
+//
+//    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",strNow];
+
     
-    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",strNow];
+////////////////////////////////////////1113///////////////////////////////////////
+//    i = i + 1;
+//    
+//    NSString *fileName = [NSString stringWithFormat:@"img%ld.jpg", i];
+//    
+//////////////////////////////////////////////////////////////////////////////////
+    
     
     // Documentsディレクトリに保存
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
@@ -155,24 +183,39 @@
     
     [data writeToFile:[path stringByAppendingPathComponent:fileName] atomically:YES];
     
-    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];//1111
+//    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+//    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];//1111
     
-    [second_dictionary setObject:fileName forKey:@"fileName"];//1111
-    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
+//    [second_dictionary setObject:fileName forKey:@"fileName"];//1111
+//    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
+//    
+//    [first_dictionary setObject:second_dictionary forKey:strNowKey];//1111
+//    
+//    documentData = first_dictionary;
+//    
+//    [defaults setObject:documentData forKey:@"documentData"];
+//    [defaults synchronize];
+
+
+/////////////////////////1113ok
+    NSDictionary *temp_second_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+    NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;
+    NSString *number = [NSString stringWithFormat:@"%ld", i];//1113
+//    [second_dictionary setObject:fileName forKey:strNowKey];
+    [second_dictionary setObject:fileName forKey:number];
     
-    [first_dictionary setObject:second_dictionary forKey:strNowKey];//1111
-    
-    documentData = first_dictionary;
+    documentData = second_dictionary;
     
     [defaults setObject:documentData forKey:@"documentData"];
     [defaults synchronize];
+    
 
+    _takePictureFlag = YES;
+    
+    
     // モーダルビューを閉じる
     [self dismissViewControllerAnimated:NO completion:nil];
 
-    
-    
     // カメラが使用可能かどうか判定する
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return;
@@ -194,6 +237,7 @@
     [self presentViewController:imagePickerController animated:NO completion:nil];
 
     
+    
 }
 
 
@@ -202,15 +246,78 @@
 {
     
     NSLog(@"キャンセルが押されました");
+
     
-    // モーダルビューを閉じる
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (_takePictureFlag) {
+        
+/////////////////////////////////////1113///////////////////////////////////
+    i = 0;
     
+    NSDate *now = [NSDate date];
+    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
+    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
+    NSString *strNowKey = [dfkey stringFromDate:now];
+
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    documentData = [defaults dictionaryForKey:@"documentData"];
+    
+    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
+    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];
+    
+    NSArray *keys = [documentData allKeys];
+
+    NSMutableDictionary *imageList = [[NSMutableDictionary alloc] init];
+/////////////////////////////////////////////////////////////試し
+    for (int k = 1; k <= keys.count; k++)
+    {
+        NSString *number = [NSString stringWithFormat:@"%d", k];//113
+        NSString *fileName = [documentData objectForKey:number];/////////////////////////////////////////////////////////////試し
+
+        [imageList setObject:fileName forKey:number];
+        
+    }
+    
+    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
+    
+//    [second_dictionary setObject:keys forKey:strNowKey];
+    
+//    [second_dictionary setObject:keys forKey:@"imageList"];
+    [second_dictionary setObject:imageList forKey:@"imageList"];//1113(try)
+    
+    [first_dictionary setObject:second_dictionary forKey:strNowKey];
+
+    folder = first_dictionary;
+    
+    [defaults setObject:folder forKey:@"folder"];
+    [defaults synchronize];
+    
+///////////////////////////////////documentDataの初期化//////////////////////////////////////
+    NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+
+    [init_documentData removeAllObjects];
+    
+    documentData = init_documentData;
+    
+ //////////////////////////////////////////////////////////////////////////////////
+        _takePictureFlag = NO;
+        
+        // モーダルビューを閉じる
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }else{
+        
+        // モーダルビューを閉じる
+        [self dismissViewControllerAnimated:YES completion:nil];
+    
+    }
 }
 
 //TableViewの行数決定
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return documentData.count;
+//    return documentData.count;
+    return folder.count;//1113
 }
 
 //TableViewの行に表示するデータの作成
@@ -222,10 +329,20 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    //行に配列の文字列を表示
-    NSArray *keys = [documentData allKeys];
-    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:indexPath.row]];//1111
+//    //行に配列の文字列を表示
+//    NSArray *keys = [documentData allKeys];
+//    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:indexPath.row]];//1111
+//    NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
+
+    
+    
+    
+//行に配列の文字列を表示//////////////////////////////////1113
+    NSArray *keys = [folder allKeys];
+    NSDictionary *second_dictionary = [folder objectForKey:[keys objectAtIndex:indexPath.row]];//1111
     NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
+
+//////////////////////////////////////////////////////////////////////////////////////
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@",displayName];
    
@@ -239,50 +356,138 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//        
+//        documentData = [defaults dictionaryForKey:@"documentData"];
+//        
+//        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+//        
+//        
+//        
+//        NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
+//        NSArray *keys = [documentData allKeys];
+//        NSString *strKey = [keys objectAtIndex:selectindex];
+//        NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
+//        
+//        [first_dictionary removeObjectForKey:strKey];
+//        
+//        documentData = first_dictionary;
+//        
+//        [defaults setObject:documentData forKey:@"documentData"];
+//        [defaults synchronize];
+//
+//        
+//        
+//        
+//        //画像ファイルを削除
+//        // ファイルマネージャを作成
+//        NSFileManager *fileManager = [NSFileManager defaultManager];
+//        
+//        // 削除したいファイルのパスを作成
+//        NSString *fileName = imgname;
+//        // Documentsディレクトリに保存
+//        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//        
+//        NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
+//        
+//        
+//        NSError *error;
+//        
+//        // ファイルを移動
+//        BOOL result = [fileManager removeItemAtPath:FullPath error:&error];
+//        
+//        if (result) {
+//            NSLog(@"ファイルを削除に成功：%@", FullPath);
+//        } else {
+//            NSLog(@"ファイルの削除に失敗：%@", error.description);
+//        }
+//        
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+
+        
+        
+/////////////////////////////////////////////////1113///////////////////////////////////////////
+        
+
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        documentData = [defaults dictionaryForKey:@"documentData"];
+        folder = [defaults dictionaryForKey:@"folder"];
         
-        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-        
-        
+        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
         
         NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
-        NSArray *keys = [documentData allKeys];
-        NSString *strKey = [keys objectAtIndex:selectindex];
-        NSString *imgname = [documentData objectForKey:[keys objectAtIndex:selectindex]];
+        NSArray *keys = [folder allKeys];
+        NSString *strKey = [keys objectAtIndex:selectindex];//1113
         
-        [first_dictionary removeObjectForKey:strKey];
         
-        documentData = first_dictionary;
+//        NSDictionary *temp_second_dictionary = [first_dictionary objectForKey:[keys objectAtIndex:selectindex]];
+//        NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;
+//        
+//        NSDictionary *temp_imageList = [second_dictionary objectForKey:@"imageList"];
+//        NSMutableDictionary *imageList = temp_imageList.mutableCopy;
+
         
-        [defaults setObject:documentData forKey:@"documentData"];
+        [first_dictionary removeObjectForKey:strKey];//1113
+        
+        folder = first_dictionary;
+    
+        [defaults setObject:folder forKey:@"folder"];
         [defaults synchronize];
         
-        //画像ファイルを削除
-        // ファイルマネージャを作成
-        NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        // 削除したいファイルのパスを作成
-        NSString *fileName = imgname;
-        // Documentsディレクトリに保存
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-        
-        NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
-        
-        
-        NSError *error;
-        
-        // ファイルを移動
-        BOOL result = [fileManager removeItemAtPath:FullPath error:&error];
-       
-        if (result) {
-            NSLog(@"ファイルを削除に成功：%@", FullPath);
-        } else {
-            NSLog(@"ファイルの削除に失敗：%@", error.description);
-        }
+//        for (int k = 1; k <= imageList.count; k++)//試し1113
+//        {
+//            NSString *number = [NSString stringWithFormat:@"%d", k];//113
+//            NSString *imgname = [imageList objectForKey:number];
+//            
+////            [first_dictionary removeObjectForKey:second_dictionary];
+////
+////            [second_dictionary removeObjectForKey:number];
+////
+////            documentData = first_dictionary;
+////        
+////            [defaults setObject:documentData forKey:@"documentData"];
+////            [defaults synchronize];
+//        
+////        for (int k = 1; k <= imageList.count; k++)
+////        {
+// 
+//        
+////            NSString *number = [NSString stringWithFormat:@"%d", k];//113
+////            NSString *imgname = [imageList objectForKey:number];
+//       
+//        
+//            //画像ファイルを削除
+//            // ファイルマネージャを作成
+//            NSFileManager *fileManager = [NSFileManager defaultManager];
+//        
+//            // 削除したいファイルのパスを作成
+//            NSString *fileName = imgname;
+//            // Documentsディレクトリに保存
+//            NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//        
+//            NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
+//        
+//        
+//            NSError *error;
+//        
+//            // ファイルを移動
+//            BOOL result = [fileManager removeItemAtPath:FullPath error:&error];
+//       
+//            if (result) {
+//                NSLog(@"ファイルを削除に成功：%@", FullPath);
+//            } else {
+//                NSLog(@"ファイルの削除に失敗：%@", error.description);
+//            }
+//         
+//        }
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+    
     }
 }
 
@@ -296,12 +501,25 @@
  
     NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
     
-    NSArray *keys = [documentData allKeys];
-    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:selectindex]];//1111
-    NSString *fileName = [second_dictionary objectForKey:@"fileName"];//1111
+//    NSArray *keys = [documentData allKeys];
+//    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:selectindex]];//1111
+//    NSString *fileName = [second_dictionary objectForKey:@"fileName"];//1111
+//    
+//    dvc.documentKey = [keys objectAtIndex:selectindex];
+//    dvc.documentImageName = fileName;
+   
     
-    dvc.documentKey = [keys objectAtIndex:selectindex];
-    dvc.documentImageName = fileName;
+//////////////////////////////////////////////////1113
+    NSArray *keys = [folder allKeys];
+    NSDictionary *second_dictionary = [folder objectForKey:[keys objectAtIndex:selectindex]];
+    NSDictionary *imageList = [second_dictionary objectForKey:@"imageList"];
+
+    dvc.documentImageList = imageList;
+    
+////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
     
 }
 
@@ -345,14 +563,39 @@
         
         NSLog(@"text=%@",[[alertView textFieldAtIndex:0] text]);
       
+//        //ユーザデフォルトの更新
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];//取得
+//        
+//        documentData = [defaults dictionaryForKey:@"documentData"];
+//
+//        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+//        
+//        NSArray *keys = [documentData allKeys];
+//        NSDictionary *temp_second_dictionary = [first_dictionary objectForKey:[keys objectAtIndex:longtapIndex.row]];//1112
+//        NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;//temp_second_dictionaryをmutableとしてコピー
+//        NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1110
+//        
+//        displayName = [[alertView textFieldAtIndex:0] text];
+//        
+//        [second_dictionary setObject:displayName forKey:@"displayName"];
+//        [first_dictionary setObject:second_dictionary forKey:[keys objectAtIndex:longtapIndex.row]];
+// 
+//        documentData =first_dictionary;
+//
+//        [defaults setObject:documentData forKey:@"documentData"];
+//        [defaults synchronize];
+//        
+//        documentcell.textLabel.text = [[alertView textFieldAtIndex:0] text];
+       
+        
         //ユーザデフォルトの更新
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];//取得
         
-        documentData = [defaults dictionaryForKey:@"documentData"];
-
-        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+        folder = [defaults dictionaryForKey:@"folder"];
         
-        NSArray *keys = [documentData allKeys];
+        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
+        
+        NSArray *keys = [folder allKeys];
         NSDictionary *temp_second_dictionary = [first_dictionary objectForKey:[keys objectAtIndex:longtapIndex.row]];//1112
         NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;//temp_second_dictionaryをmutableとしてコピー
         NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1110
@@ -361,13 +604,14 @@
         
         [second_dictionary setObject:displayName forKey:@"displayName"];
         [first_dictionary setObject:second_dictionary forKey:[keys objectAtIndex:longtapIndex.row]];
- 
-        documentData =first_dictionary;
-
-        [defaults setObject:documentData forKey:@"documentData"];
+        
+        folder =first_dictionary;
+        
+        [defaults setObject:folder forKey:@"folder"];
         [defaults synchronize];
         
         documentcell.textLabel.text = [[alertView textFieldAtIndex:0] text];
+        
         
     }else if(buttonIndex == 0){
     

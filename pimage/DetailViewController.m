@@ -14,24 +14,88 @@
 @end
 
 @implementation DetailViewController{
-
-   
+ 
+    IBOutlet UIScrollView *scrollView;//1113
+    NSUInteger kNumImages;    //(※3)総page数
 }
+
+const CGFloat kScrollObjHeight = 568.0;//(※1)1pageの高さ
+const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
+
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.    
-    NSString *fileName = self.documentImageName;
-    // Documentsディレクトリに保存
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
-    //データの読み込み
-    NSData *data = [NSData dataWithContentsOfFile:FullPath];
-    //画像の作成
-    UIImage *image = [[UIImage alloc] initWithData:data];
     
-    self.dtlImageView.image = image;
+    kNumImages = _documentImageList.count;
+    
+    
+    //ScrollViewの生成と設定
+    scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    
+    // 横スクロールのインジケータを非表示にする
+    scrollView.showsHorizontalScrollIndicator = NO;
+    //ページングを有効にする
+    scrollView.pagingEnabled = YES;
+    //タッチの検出を有効にする
+    scrollView.userInteractionEnabled = YES;
+    
+    
+    [self.view addSubview:scrollView];
+
+    
+    NSUInteger i;
+    
+    for (i = 1; i <= kNumImages; i++)
+    {
+        
+        NSString *number = [NSString stringWithFormat:@"%ld", i];
+        NSString *imageName = [_documentImageList objectForKey:number];
+        
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,imageName];
+
+        NSData *data = [NSData dataWithContentsOfFile:FullPath];
+
+        UIImage *image = [[UIImage alloc] initWithData:data];
+
+//        UIImage *image = [UIImage imageNamed:imageName];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        
+        CGRect rect = imageView.frame;
+        rect.size.height = kScrollObjHeight;
+        rect.size.width = kScrollObjWidth;
+        imageView.frame = rect;
+        imageView.tag = i;
+        
+        [scrollView addSubview:imageView];
+        
+        
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(160, 40, 10, 20)];
+        label.text = [NSString stringWithFormat:@"%ld", i];
+        label.font = [UIFont fontWithName:@"Arial" size:20];
+        // label.backgroundColor = [UIColor yellowColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        [imageView addSubview:label];
+        
+    }
+    
+    [self layoutScrollImages];
+
+    //toolbarを隠す
+    [self.navigationController setToolbarHidden:YES animated:NO];
+//    
+//    // Do any additional setup after loading the view.    
+//    NSString *fileName = self.documentImageName;
+//    // Documentsディレクトリに保存
+//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
+//    //データの読み込み
+//    NSData *data = [NSData dataWithContentsOfFile:FullPath];
+//    //画像の作成
+//    UIImage *image = [[UIImage alloc] initWithData:data];
+//    
+//    self.dtlImageView.image = image;
     
     
     
@@ -68,6 +132,41 @@
 //    }
 //}
 ////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
+
+
+
+
+
+- (void)layoutScrollImages
+{
+    UIImageView *view = nil;
+    NSArray *subviews = [scrollView subviews];
+    
+    CGFloat curXLoc = 0;
+    for (view in subviews)
+    {
+        if ([view isKindOfClass:[UIImageView class]] && view.tag > 0)
+        {
+            CGRect frame = view.frame;
+            frame.origin = CGPointMake(curXLoc, 0);
+            view.frame = frame;
+            
+            curXLoc += (kScrollObjWidth);
+        }
+    }
+    
+    //スクロールの総範囲
+    [scrollView setContentSize:CGSizeMake((kNumImages * kScrollObjWidth), kScrollObjHeight)];
+    
+    
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 

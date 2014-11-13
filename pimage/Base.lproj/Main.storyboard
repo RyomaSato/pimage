@@ -45,17 +45,9 @@
                     <view key="view" contentMode="scaleToFill" id="yFF-5Z-a9y">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQG-IU-fcs">
-                                <rect key="frame" x="0.0" y="65" width="320" height="503"/>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="dtlImageView" destination="wQG-IU-fcs" id="jho-AW-wMN"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6mN-s5-hoa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
