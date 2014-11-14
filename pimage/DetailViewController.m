@@ -70,13 +70,12 @@ const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
         
         [scrollView addSubview:imageView];
         
-        
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(160, 40, 10, 20)];
-        label.text = [NSString stringWithFormat:@"%ld", i];
-        label.font = [UIFont fontWithName:@"Arial" size:20];
-        // label.backgroundColor = [UIColor yellowColor];
-        label.textAlignment = NSTextAlignmentCenter;
-        [imageView addSubview:label];
+//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(160, 40, 10, 20)];
+//        label.text = [NSString stringWithFormat:@"%ld", i];
+//        label.font = [UIFont fontWithName:@"Arial" size:20];
+//        // label.backgroundColor = [UIColor yellowColor];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        [imageView addSubview:label];
         
     }
     
@@ -161,6 +160,7 @@ const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
     
     
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////
 

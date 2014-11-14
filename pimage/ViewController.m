@@ -151,17 +151,12 @@
     // PNGデータとしてNSDataを作成
     //NSData *data = UIImagePNGRepresentation(image);
     
-////////////////////////////////////////////////////(仮)11/14_2:38
+
     NSDate *now = [NSDate date];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyyMMdd_HHmmss"];
     NSString *strNow = [df stringFromDate:now];
 
-    i = i + 1;
-    
-    NSString *fileName = [NSString stringWithFormat:@"img%@.jpg", strNow];
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 //    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
 //    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
 //    NSString *strNowKey = [dfkey stringFromDate:now];
@@ -169,13 +164,7 @@
 //    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",strNow];
 
     
-////////////////////////////////////////1113///////////////////////////////////////
-//    i = i + 1;
-//    
-//    NSString *fileName = [NSString stringWithFormat:@"img%ld.jpg", i];
-//    
-//////////////////////////////////////////////////////////////////////////////////
-    
+    NSString *fileName = [NSString stringWithFormat:@"img%@.jpg", strNow];
     
     // Documentsディレクトリに保存
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
@@ -198,10 +187,11 @@
 
 
 /////////////////////////1113ok
+    i = i + 1;
+    
     NSDictionary *temp_second_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
     NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;
     NSString *number = [NSString stringWithFormat:@"%ld", i];//1113
-//    [second_dictionary setObject:fileName forKey:strNowKey];
     [second_dictionary setObject:fileName forKey:number];
     
     documentData = second_dictionary;
@@ -211,34 +201,88 @@
     
 
     _takePictureFlag = YES;
-    
+
     
     // モーダルビューを閉じる
     [self dismissViewControllerAnimated:NO completion:nil];
 
-    // カメラが使用可能かどうか判定する
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        return;
-    }
     
-    // UIImagePickerControllerのインスタンスを生成
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     
-    // デリゲートを設定
-    imagePickerController.delegate = self;
+//////////////インターバルを設定(応急処置)mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1114
+    //セレクタをセット
+    SEL sel = @selector(targetImage:didFinishSavingWithError:contextInfo:);
     
-    // 画像の取得先をカメラに設定
-    imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    // シグネチャをセット
+    NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:sel];
     
-    // 画像取得後に編集するかどうか（デフォルトはNO）
-    imagePickerController.allowsEditing = NO;
+    // インボケーションをセット
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     
-    // 撮影画面をモーダルビューとして表示する
-    [self presentViewController:imagePickerController animated:NO completion:nil];
+    // オブジェクトをセット
+    [invocation setTarget:self];
+    
+    // セレクタをセット
+    [invocation setSelector:sel];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.3f invocation:invocation repeats:NO];
+    
 
-    
+//    // カメラが使用可能かどうか判定する
+//    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//        return;
+//    }
+//    
+//    // UIImagePickerControllerのインスタンスを生成
+//    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+//    
+//    // デリゲートを設定
+//    //  imagePickerController.delegate = self;
+//    
+//    // 画像の取得先をカメラに設定
+//    imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+//    
+//    // 画像取得後に編集するかどうか（デフォルトはNO）
+//    imagePickerController.allowsEditing = NO;
+//    
+//    // 撮影画面をモーダルビューとして表示する
+//    [self presentViewController:imagePickerController animated:NO completion:nil];
+   
     
 }
+
+
+//// 画像の保存完了時に呼ばれるメソッド1114
+- (void)targetImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)context
+{
+    if (error) {
+        // 保存失敗時の処理
+    } else {
+        // 保存成功時の処理
+        
+        // カメラが使用可能かどうか判定する
+        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            return;
+        }
+        
+        // UIImagePickerControllerのインスタンスを生成
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+        
+        // デリゲートを設定
+          imagePickerController.delegate = self;
+        
+        // 画像の取得先をカメラに設定
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        // 画像取得後に編集するかどうか（デフォルトはNO）
+        imagePickerController.allowsEditing = NO;
+        
+        // 撮影画面をモーダルビューとして表示する
+        [self presentViewController:imagePickerController animated:NO completion:nil];
+
+    }
+}
+
+
 
 
 // 画像の選択がキャンセルされた時に呼ばれるデリゲートメソッド
@@ -251,54 +295,54 @@
     if (_takePictureFlag) {
         
 /////////////////////////////////////1113///////////////////////////////////
-    i = 0;
+        i = 0;
     
-    NSDate *now = [NSDate date];
-    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
-    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
-    NSString *strNowKey = [dfkey stringFromDate:now];
+        NSDate *now = [NSDate date];
+        NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
+        [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
+        NSString *strNowKey = [dfkey stringFromDate:now];
 
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    documentData = [defaults dictionaryForKey:@"documentData"];
+        documentData = [defaults dictionaryForKey:@"documentData"];
     
-    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
-    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];
-    
-    NSArray *keys = [documentData allKeys];
-
-    NSMutableDictionary *imageList = [[NSMutableDictionary alloc] init];
-/////////////////////////////////////////////////////////////試し
-    for (int k = 1; k <= keys.count; k++)
-    {
-        NSString *number = [NSString stringWithFormat:@"%d", k];//113
-        NSString *fileName = [documentData objectForKey:number];/////////////////////////////////////////////////////////////試し
-
-        [imageList setObject:fileName forKey:number];
+        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
+        NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];
         
-    }
-    
-    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
-    
-//    [second_dictionary setObject:keys forKey:strNowKey];
-    
-//    [second_dictionary setObject:keys forKey:@"imageList"];
-    [second_dictionary setObject:imageList forKey:@"imageList"];//1113(try)
-    
-    [first_dictionary setObject:second_dictionary forKey:strNowKey];
+        NSArray *keys = [documentData allKeys];
 
-    folder = first_dictionary;
+        NSMutableDictionary *imageList = [[NSMutableDictionary alloc] init];
+/////////////////////////////////////////////////////////////試し
+        for (int k = 1; k <= keys.count; k++)
+        {
+            NSString *number = [NSString stringWithFormat:@"%d", k];//113
+            NSString *fileName = [documentData objectForKey:number];////////////////////////////////試し
+
+            [imageList setObject:fileName forKey:number];
+        
+        }
     
-    [defaults setObject:folder forKey:@"folder"];
-    [defaults synchronize];
+        [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
+    
+        //[second_dictionary setObject:keys forKey:strNowKey];
+    
+        //[second_dictionary setObject:keys forKey:@"imageList"];
+        [second_dictionary setObject:imageList forKey:@"imageList"];//1113(try)
+    
+        [first_dictionary setObject:second_dictionary forKey:strNowKey];
+
+        folder = first_dictionary;
+    
+        [defaults setObject:folder forKey:@"folder"];
+        [defaults synchronize];
     
 ///////////////////////////////////documentDataの初期化//////////////////////////////////////
-    NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:documentData];
+        NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:documentData];
 
-    [init_documentData removeAllObjects];
+        [init_documentData removeAllObjects];
     
-    documentData = init_documentData;
+        documentData = init_documentData;
     
  //////////////////////////////////////////////////////////////////////////////////
         _takePictureFlag = NO;
@@ -334,16 +378,12 @@
 //    NSDictionary *second_dictionary = [documentData objectForKey:[keys objectAtIndex:indexPath.row]];//1111
 //    NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
 
-    
-    
-    
 //行に配列の文字列を表示//////////////////////////////////1113
     NSArray *keys = [folder allKeys];
     NSDictionary *second_dictionary = [folder objectForKey:[keys objectAtIndex:indexPath.row]];//1111
     NSString *displayName = [second_dictionary objectForKey:@"displayName"];//1111
 
 //////////////////////////////////////////////////////////////////////////////////////
-    
     cell.textLabel.text = [NSString stringWithFormat:@"%@",displayName];
    
     return cell;
@@ -416,7 +456,7 @@
         
         NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
         
-        NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;
+        NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;///////////うまく行ってない1114
         NSArray *keys = [folder allKeys];
         NSString *strKey = [keys objectAtIndex:selectindex];//1113
         
