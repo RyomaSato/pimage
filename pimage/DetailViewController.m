@@ -16,30 +16,50 @@
 @implementation DetailViewController{
  
     IBOutlet UIScrollView *scrollView;//1113
-    NSUInteger kNumImages;    //(※3)総page数
+    NSUInteger kNumImages;    //総page数
+    
+    UIImageView *imageView;//1116試し
 }
 
-const CGFloat kScrollObjHeight = 568.0;//(※1)1pageの高さ
-const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
+const CGFloat kScrollObjHeight = 568.0;//1pageの高さ
+const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+
+    
+    
+    //ボタン生成1116途中
+    UIBarButtonItem *nvgRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add)];
+    self.navigationItem.rightBarButtonItem = nvgRightBarButton;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
     
     kNumImages = _documentImageList.count;
     
-    
     //ScrollViewの生成と設定
     scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    
     // 横スクロールのインジケータを非表示にする
     scrollView.showsHorizontalScrollIndicator = NO;
     //ページングを有効にする
     scrollView.pagingEnabled = YES;
     //タッチの検出を有効にする
     scrollView.userInteractionEnabled = YES;
-    
     
     [self.view addSubview:scrollView];
 
@@ -59,8 +79,10 @@ const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
 
         UIImage *image = [[UIImage alloc] initWithData:data];
 
-//        UIImage *image = [UIImage imageNamed:imageName];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+//        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        imageView = [[UIImageView alloc] initWithImage:image];//1116(試し)
+
+        
         
         CGRect rect = imageView.frame;
         rect.size.height = kScrollObjHeight;
@@ -98,39 +120,7 @@ const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
     
     
     
-////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm（仮）mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-//    //ロングタップのジェスチャー生成
-//    UILongPressGestureRecognizer* longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-//    [self.dtlImageView addGestureRecognizer:longPressGesture];
-//    
-//    longPressGesture.minimumPressDuration = 0.8;//ロングプレス認識のための時間(s)
-////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-
-    
 }
-
-
-
-
-////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm（仮）mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-//- (void) handleLongPressGesture:(UILongPressGestureRecognizer *)gestureRecognizer{
-//    
-//    if([gestureRecognizer state] == UIGestureRecognizerStateBegan){
-//        NSLog(@"longtapbegan");
-//        
-//        // UILongPressGestureRecognizerからlocationInView:を使ってタップした場所のCGPointを取得する
-//        CGPoint longPressPoint = [gestureRecognizer locationInView:self.dtlImageView];
-//        
-//        NSLog(@"touchedPoint x:[%f]", longPressPoint.x);
-//        NSLog(@"touchedPoint y:[%f]", longPressPoint.y);
-//        
-//    }else if([gestureRecognizer state] == UIGestureRecognizerStateEnded){
-//        NSLog(@"longtapended");
-//        
-//        
-//    }
-//}
-////mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 
 
 
@@ -162,7 +152,19 @@ const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////
+
+//1116途中
+-(void)add{
+    NSLog(@"addボタンが押されました");
+   
+    //ボタン生成
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeContactAdd];
+    btn.frame = CGRectMake(80, 80, 50, 30);
+    
+    [imageView addSubview:btn];
+
+    
+}
 
 
 

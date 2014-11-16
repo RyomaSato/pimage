@@ -211,19 +211,14 @@
 //////////////インターバルを設定(応急処置)mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1114
     //セレクタをセット
     SEL sel = @selector(targetImage:didFinishSavingWithError:contextInfo:);
-    
     // シグネチャをセット
     NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:sel];
-    
     // インボケーションをセット
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    
     // オブジェクトをセット
     [invocation setTarget:self];
-    
     // セレクタをセット
     [invocation setSelector:sel];
-    
     [NSTimer scheduledTimerWithTimeInterval:0.3f invocation:invocation repeats:NO];
     
 
@@ -448,7 +443,6 @@
         
         
 /////////////////////////////////////////////////1113///////////////////////////////////////////
-        
 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
@@ -456,7 +450,8 @@
         
         NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
         
-        NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;///////////うまく行ってない1114
+   //     NSInteger selectindex = self.documentListTableView.indexPathForSelectedRow.row;///////////うまく行ってない1114
+        NSInteger selectindex = indexPath.row;//
         NSArray *keys = [folder allKeys];
         NSString *strKey = [keys objectAtIndex:selectindex];//1113
         
