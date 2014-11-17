@@ -17,8 +17,9 @@
  
     IBOutlet UIScrollView *scrollView;//1113
     NSUInteger kNumImages;    //総page数
-    
     UIImageView *imageView;//1116試し
+    UIImageView *pinImageView;//1117
+    
 }
 
 const CGFloat kScrollObjHeight = 568.0;//1pageの高さ
@@ -81,8 +82,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
 //        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView = [[UIImageView alloc] initWithImage:image];//1116(試し)
-
-        
+     
+        //タッチの検出を有効にする
+        imageView.userInteractionEnabled = YES;
         
         CGRect rect = imageView.frame;
         rect.size.height = kScrollObjHeight;
@@ -92,12 +94,6 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         
         [scrollView addSubview:imageView];
         
-//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(160, 40, 10, 20)];
-//        label.text = [NSString stringWithFormat:@"%ld", i];
-//        label.font = [UIFont fontWithName:@"Arial" size:20];
-//        // label.backgroundColor = [UIColor yellowColor];
-//        label.textAlignment = NSTextAlignmentCenter;
-//        [imageView addSubview:label];
         
     }
     
@@ -105,26 +101,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
     //toolbarを隠す
     [self.navigationController setToolbarHidden:YES animated:NO];
-//    
-//    // Do any additional setup after loading the view.    
-//    NSString *fileName = self.documentImageName;
-//    // Documentsディレクトリに保存
-//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSString *FullPath = [NSString stringWithFormat:@"%@/%@",path,fileName];
-//    //データの読み込み
-//    NSData *data = [NSData dataWithContentsOfFile:FullPath];
-//    //画像の作成
-//    UIImage *image = [[UIImage alloc] initWithData:data];
-//    
-//    self.dtlImageView.image = image;
-    
-    
-    
 }
-
-
-
-
 
 
 - (void)layoutScrollImages
@@ -157,18 +134,35 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 -(void)add{
     NSLog(@"addボタンが押されました");
    
-    //ボタン生成
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    btn.frame = CGRectMake(80, 80, 50, 30);
+    /* ビューを作成 */
+    CGRect rect = CGRectMake(160, 100, 20, 30);
+    pinImageView = [[UIImageView alloc]initWithFrame:rect];
+    //myView.backgroundColor = [UIColor blueColor];
+    pinImageView.image = [UIImage imageNamed:@"pin.png"];
+    pinImageView.userInteractionEnabled = YES;
+    [imageView addSubview:pinImageView];
     
-    [imageView addSubview:btn];
-
+    /* ドラッグ */
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(view_Dragged:)];
+    // ビューにジェスチャーを追加
+    [imageView addGestureRecognizer:pan];
+    
     
 }
 
 
-
-
+-(void)view_Dragged:(UIPanGestureRecognizer *)sender{
+    
+    // ユーザがドラッグした座標を取得
+    CGPoint point = [sender translationInView:imageView];
+    
+    CGPoint movedPoint = CGPointMake(pinImageView.center.x + point.x ,pinImageView.center.y + point.y);
+    
+    pinImageView.center = movedPoint;
+    
+    [sender setTranslation:CGPointZero inView:imageView];
+    
+}
 
 
 

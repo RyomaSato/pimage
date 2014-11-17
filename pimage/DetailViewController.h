@@ -12,11 +12,6 @@
 
 @property (nonatomic,assign) double select_num;//intからdoubleに変更11/1
 
-//@property (weak, nonatomic) IBOutlet UIImageView *dtlImageView;
-
-//@property(nonatomic,assign) NSString *documentKey;
-//@property(nonatomic,assign) NSString *documentImageName;
-
 @property(nonatomic,assign) NSDictionary *documentImageList;//1113
 
 

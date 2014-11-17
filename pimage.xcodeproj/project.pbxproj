@@ -14,6 +14,7 @@
 		2C044B301A025FC00050A4A0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C044B2F1A025FC00050A4A0 /* Images.xcassets */; };
 		2C044B331A025FC00050A4A0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C044B311A025FC00050A4A0 /* LaunchScreen.xib */; };
 		2C044B3F1A025FC00050A4A0 /* pimageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C044B3E1A025FC00050A4A0 /* pimageTests.m */; };
+		2C1C76221A19C37000B889BA /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 2C1C76211A19C37000B889BA /* pin.png */; };
 		2CC6FDCA1A05053600F19876 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC6FDC91A05053600F19876 /* DetailViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		2C044B381A025FC00050A4A0 /* pimageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pimageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C044B3D1A025FC00050A4A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2C044B3E1A025FC00050A4A0 /* pimageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pimageTests.m; sourceTree = "<group>"; };
+		2C1C76211A19C37000B889BA /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		2CC6FDC81A05053600F19876 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		2CC6FDC91A05053600F19876 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,6 +103,7 @@
 		2C044B221A025FBF0050A4A0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2C1C76201A19C37000B889BA /* image */,
 				2C044B231A025FC00050A4A0 /* Info.plist */,
 				2C044B241A025FC00050A4A0 /* main.m */,
 			);
@@ -122,6 +125,14 @@
 				2C044B3D1A025FC00050A4A0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2C1C76201A19C37000B889BA /* image */ = {
+			isa = PBXGroup;
+			children = (
+				2C1C76211A19C37000B889BA /* pin.png */,
+			);
+			path = image;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C044B2E1A025FC00050A4A0 /* Main.storyboard in Resources */,
+				2C1C76221A19C37000B889BA /* pin.png in Resources */,
 				2C044B331A025FC00050A4A0 /* LaunchScreen.xib in Resources */,
 				2C044B301A025FC00050A4A0 /* Images.xcassets in Resources */,
 			);
