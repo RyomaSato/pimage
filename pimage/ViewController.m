@@ -35,7 +35,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    folder =[defaults dictionaryForKey:@"folder"];
+    folder = [defaults dictionaryForKey:@"folder"];
     
     [self.documentListTableView reloadData];
     
