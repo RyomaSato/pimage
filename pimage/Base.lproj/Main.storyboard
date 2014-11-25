@@ -34,6 +34,44 @@
             </objects>
             <point key="canvasLocation" x="1066" y="108"/>
         </scene>
+        <!--Image View Controller-->
+        <scene sceneID="7d8-Jp-Zqd">
+            <objects>
+                <viewController storyboardIdentifier="ImageViewController" id="O9m-vA-jYi" customClass="ImageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="41b-mh-bKQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="PE3-Gj-VVG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4ci-1c-Mql">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="liD-gJ-fBk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1466" y="775"/>
+        </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="7bT-Gs-35M">
+            <objects>
+                <viewController storyboardIdentifier="CameraViewController" id="dfm-xS-HLG" customClass="CameraViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dFy-fz-9Pc"/>
+                        <viewControllerLayoutGuide type="bottom" id="Iy0-z0-5Wj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="O0U-bp-CMc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="agS-b2-g6b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1066" y="775"/>
+        </scene>
         <!--Detail View Controller-->
         <scene sceneID="kcW-p0-h9b">
             <objects>
