@@ -28,12 +28,6 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    
-//    documentData =[defaults dictionaryForKey:@"documentData"];
-//    
-//    [self.documentListTableView reloadData];
-
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -43,19 +37,6 @@
     
     //ToolBarを表示する
     [self.navigationController setToolbarHidden:NO animated:NO];//1113
-    
-    
-    
-    
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if (app.cameraViewFlag) {
-////    if (_cameraViewFlag) {
-//        [self openCamera];
-    
-        //[self performSelector:@selector(openCamera) withObject:nil afterDelay:0.01];//1125
-    //}
-    
-    
     
 }
 
@@ -81,15 +62,6 @@
     [self.documentListTableView addGestureRecognizer:longPressGesture];
     
     longPressGesture.minimumPressDuration = 0.8;//ロングプレス認識のための時間(s)
-
-    
-    
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    app.cameraViewFlag = NO;
-////    _cameraViewFlag = NO;
-//    
-//    _takePictureFlag = NO;
-    
     
 }
 
@@ -115,10 +87,6 @@
     //モーダルとして表示
     [self presentViewController:cameraViewController animated:NO completion:nil];
 
-    
-//    //[self showUIImagePicker];
-//    [self performSelector:@selector(openCamera) withObject:nil afterDelay:0.01];//1124
-
 }
 
 
@@ -143,326 +111,6 @@
     self.toolbarItems = items;
     
 }
-
-
-//- (void)showUIImagePicker
-//{
-//    
-//    // カメラが使用可能かどうか判定する
-//    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-//        return;
-//    }
-//    
-//    // UIImagePickerControllerのインスタンスを生成
-//    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-//    
-//    // デリゲートを設定
-//    imagePickerController.delegate = self;
-//    
-//    // 画像の取得先をカメラに設定
-//    imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    
-//    // 画像取得後に編集するかどうか（デフォルトはNO）
-//    imagePickerController.allowsEditing = NO;
-//    
-//    // 撮影画面をモーダルビューとして表示する
-//    [self presentViewController:imagePickerController animated:YES completion:nil];
-//    
-//}
-
-
-
-
-
-
-////1124
-//-(void)openCamera{
-//    
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    app.cameraViewFlag = YES;
-////    _cameraViewFlag = YES;
-//    
-//    imagePickerController = [[UIImagePickerController alloc]init];
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-//        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-//        imagePickerController.delegate = self;
-//        imagePickerController.showsCameraControls = NO;
-//        imagePickerController.view.frame = CGRectMake(0, 40, 320, 528);
-//        
-//        [[self.view superview] addSubview:imagePickerController.view];
-//       
-//        
-//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        btn.frame = CGRectMake(110, 460, 100, 30);
-//        [btn setTitle:@"takepicture" forState:UIControlStateNormal];
-//        
-//        [btn addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchDown];
-//        [imagePickerController.view addSubview:btn];
-//        
-//        UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        btn2.frame = CGRectMake(0, 460, 100, 30);
-//        [btn2 setTitle:@"Cancel" forState:UIControlStateNormal];
-//        
-//        [btn2 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchDown];
-//        [imagePickerController.view addSubview:btn2];
-//        
-//        
-//        //navigationbarを隠す
-//        [self.navigationController setNavigationBarHidden:YES animated:YES];
-//        //toolbarを隠す
-//        [self.navigationController setToolbarHidden:YES animated:NO];
-//        
-//    }
-//}
-//
-//
-//
-////1124
-//-(void)takePicture:(id)sender{
-//    //撮影
-//    [imagePickerController takePicture];
-//}
-//
-//
-//
-////画像が選択された時に呼ばれるデリゲートメソッド
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;{
-//    
-//    NSLog(@"画像選択");
-//    
-//    //1125 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//   
-//    // 渡されてきた画像をフォトアルバムに保存
-//    //UIImageWriteToSavedPhotosAlbum(image, self, @selector(targetImage:didFinishSavingWithError:contextInfo:), NULL);
-//
-//    //撮影した画像を取得
-//    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-//    
-//    // JPEGデータとしてNSDataを作成
-//    NSData *data = UIImageJPEGRepresentation(image,0.8f);
-//    // PNGデータとしてNSDataを作成
-//    //NSData *data = UIImagePNGRepresentation(image);
-//    
-//
-//    NSDate *now = [NSDate date];
-//    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//    [df setDateFormat:@"yyyyMMdd_HHmmss"];
-//    NSString *strNow = [df stringFromDate:now];
-//
-////    NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
-////    [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
-////    NSString *strNowKey = [dfkey stringFromDate:now];
-////
-////    NSString *fileName = [NSString stringWithFormat:@"%@.jpg",strNow];
-//
-//    
-//    NSString *fileName = [NSString stringWithFormat:@"img%@.jpg", strNow];
-//    
-//    // Documentsディレクトリに保存
-//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSLog(@"%@",path);
-//    
-//    NSString *imageSavePath = [path stringByAppendingPathComponent:fileName];//1124
-//    //[data writeToFile:[path stringByAppendingPathComponent:fileName] atomically:YES];
-//    
-//
-//    
-//    
-////    NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-////    NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];//1111
-//    
-////    [second_dictionary setObject:fileName forKey:@"fileName"];//1111
-////    [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
-////    
-////    [first_dictionary setObject:second_dictionary forKey:strNowKey];//1111
-////    
-////    documentData = first_dictionary;
-////    
-////    [defaults setObject:documentData forKey:@"documentData"];
-////    [defaults synchronize];
-//
-//
-///////////////////////////1113ok
-//    i = i + 1;
-//
-//    
-////////1125
-////    NSDictionary *temp_second_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-////    NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;
-////    NSString *number = [NSString stringWithFormat:@"%ld", i];//1113
-////    [second_dictionary setObject:fileName forKey:number];
-////    
-////    documentData = second_dictionary;
-////    
-////    [defaults setObject:documentData forKey:@"documentData"];
-////    [defaults synchronize];
-//    
-//
-//    _takePictureFlag = YES;
-//
-//
-//    
-//    
-//    
-//    
-////1124
-////    // モーダルビューを閉じる
-////    [self dismissViewControllerAnimated:NO completion:nil];
-//
-//    
-//    
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1124
-//    //撮影画面を隠す
-//    imagePickerController.view.hidden = YES;
-//    //ビュワーを開く
-//    if(!imageViewController){
-//        
-//        imageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageViewController"];
-//        
-//    }
-//    
-//    //ここでiのnumberを受け渡す
-//    imageViewController.num = i;
-//    imageViewController.ivc_imageSavePath = imageSavePath;
-//    imageViewController.ivc_data = data;
-//    imageViewController.ivc_image = image;
-//    imageViewController.ivc_fileName = fileName;
-//    
-//    
-//    //モーダルとして表示
-//    [self presentViewController:imageViewController animated:NO completion:nil];
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    
-//    
-//////////////////インターバルを設定(応急処置)mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1114
-////    //セレクタをセット
-////    SEL sel = @selector(targetImage:didFinishSavingWithError:contextInfo:);
-////    // シグネチャをセット
-////    NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:sel];
-////    // インボケーションをセット
-////    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-////    // オブジェクトをセット
-////    [invocation setTarget:self];
-////    // セレクタをセット
-////    [invocation setSelector:sel];
-////    [NSTimer scheduledTimerWithTimeInterval:0.3f invocation:invocation repeats:NO];
-//    
-//
-//}
-//
-//
-//////// 画像の保存完了時に呼ばれるメソッド1114
-////- (void)targetImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)context
-////{
-////    if (error) {
-////        // 保存失敗時の処理
-////    } else {
-////        // 保存成功時の処理
-////        
-////        // カメラが使用可能かどうか判定する
-////        if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-////            return;
-////        }
-////        
-////        // UIImagePickerControllerのインスタンスを生成
-////        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-////        
-////        // デリゲートを設定
-////          imagePickerController.delegate = self;
-////        
-////        // 画像の取得先をカメラに設定
-////        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-////        
-////        // 画像取得後に編集するかどうか（デフォルトはNO）
-////        imagePickerController.allowsEditing = NO;
-////        
-////        // 撮影画面をモーダルビューとして表示する
-////        [self presentViewController:imagePickerController animated:NO completion:nil];
-////
-////    }
-////}
-//
-//
-//
-//
-//// 画像の選択がキャンセルされた時に呼ばれるデリゲートメソッド
-////- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-////{
-//-(void)cancel:(id)sender{//1124
-//    
-//    NSLog(@"キャンセルが押されました");
-//
-//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        app.cameraViewFlag = NO;
-////    _cameraViewFlag = NO;
-//    
-//    if (_takePictureFlag) {
-//        
-///////////////////////////////////////1113///////////////////////////////////
-//        i = 0;
-//    
-//        NSDate *now = [NSDate date];
-//        NSDateFormatter *dfkey = [[NSDateFormatter alloc] init];
-//        [dfkey setDateFormat:@"yyyy/MM/dd_HH:mm:ss"];
-//        NSString *strNowKey = [dfkey stringFromDate:now];
-//
-//    
-//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    
-//        documentData = [defaults dictionaryForKey:@"documentData"];
-//        folder = [defaults dictionaryForKey:@"folder"];
-//    
-//        NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
-//        NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];
-//        
-//        NSArray *keys = [documentData allKeys];
-//
-//        NSMutableDictionary *imageList = [[NSMutableDictionary alloc] init];
-///////////////////////////////////////////////////////////////試し
-//        for (int k = 1; k <= keys.count; k++)
-//        {
-//            NSString *number = [NSString stringWithFormat:@"%d", k];//113
-//            NSString *fileName = [documentData objectForKey:number];////////////////////////////////試し
-//
-//            [imageList setObject:fileName forKey:number];
-//        
-//        }
-//    
-//        [second_dictionary setObject:strNowKey forKey:@"displayName"];//1111
-//    
-//        //[second_dictionary setObject:keys forKey:strNowKey];
-//    
-//        //[second_dictionary setObject:keys forKey:@"imageList"];
-//        [second_dictionary setObject:imageList forKey:@"imageList"];//1113(try)
-//    
-//        [first_dictionary setObject:second_dictionary forKey:strNowKey];
-//
-//        folder = first_dictionary;
-//    
-//        [defaults setObject:folder forKey:@"folder"];
-//        [defaults synchronize];
-//    
-/////////////////////////////////////documentDataの初期化//////////////////////////////////////
-//        NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-//
-//        [init_documentData removeAllObjects];
-//    
-//        documentData = init_documentData;
-//    
-// //////////////////////////////////////////////////////////////////////////////////
-//        _takePictureFlag = NO;
-//        
-//        // モーダルビューを閉じる
-//        [self dismissViewControllerAnimated:YES completion:nil];///?
-//        
-//        }else{
-//        
-//        // モーダルビューを閉じる
-//        [self dismissViewControllerAnimated:YES completion:nil];///?
-//    
-//    }
-//}
-
 
 
 
@@ -665,9 +313,6 @@
     dvc.documentImageList = imageList;
     
 ////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
     
 }
 

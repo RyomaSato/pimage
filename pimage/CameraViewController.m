@@ -17,7 +17,7 @@
 @implementation CameraViewController{
   //  NSInteger i;//1113(try)
     
-    NSDictionary *documentData;
+    //NSDictionary *documentData;
     NSDictionary *folder;//1113(try)
     UITableViewCell *documentcell;//1107/ユーザデフォルト更新
     NSIndexPath *longtapIndex;//1108/ユーザデフォルト更新
@@ -29,6 +29,7 @@
 //    if (app.cameraViewFlag) {
     if(imagePickerController)imagePickerController.view.hidden = NO;
     
+ 
 //    
 //    if (_cameraViewFlag) {
 //
@@ -87,7 +88,6 @@
         
         [btn2 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchDown];
         [imagePickerController.view addSubview:btn2];
-        
         
 //        //navigationbarを隠す
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -185,10 +185,6 @@
     _takePictureFlag = YES;
     
     
-    
-    
-    
-    
     //1124
     //    // モーダルビューを閉じる
     //    [self dismissViewControllerAnimated:NO completion:nil];
@@ -217,21 +213,6 @@
     [self presentViewController:imageViewController animated:NO completion:nil];
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    
-    ////////////////インターバルを設定(応急処置)mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1114
-    //    //セレクタをセット
-    //    SEL sel = @selector(targetImage:didFinishSavingWithError:contextInfo:);
-    //    // シグネチャをセット
-    //    NSMethodSignature *signature = [[self class] instanceMethodSignatureForSelector:sel];
-    //    // インボケーションをセット
-    //    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    //    // オブジェクトをセット
-    //    [invocation setTarget:self];
-    //    // セレクタをセット
-    //    [invocation setSelector:sel];
-    //    [NSTimer scheduledTimerWithTimeInterval:0.3f invocation:invocation repeats:NO];
-    
-    
 }
 
 
@@ -257,7 +238,7 @@
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        documentData = [defaults dictionaryForKey:@"documentData"];
+        NSDictionary *documentData = [defaults dictionaryForKey:@"documentData"];//1126
         folder = [defaults dictionaryForKey:@"folder"];
         
         NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
@@ -297,6 +278,8 @@
         
         documentData = init_documentData;
         
+        [defaults setObject:documentData forKey:@"documentData"];
+        [defaults synchronize];
         //////////////////////////////////////////////////////////////////////////////////
         _takePictureFlag = NO;
         
