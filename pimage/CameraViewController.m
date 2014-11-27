@@ -239,13 +239,14 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
         NSDictionary *documentData = [defaults dictionaryForKey:@"documentData"];//1126
+    
         folder = [defaults dictionaryForKey:@"folder"];
         
         NSMutableDictionary *first_dictionary = [[NSMutableDictionary alloc] initWithDictionary:folder];
         NSMutableDictionary *second_dictionary = [[NSMutableDictionary alloc] init];
         
         NSArray *keys = [documentData allKeys];
-        
+
         NSMutableDictionary *imageList = [[NSMutableDictionary alloc] init];
         /////////////////////////////////////////////////////////////試し
         for (int k = 1; k <= keys.count; k++)
@@ -273,12 +274,15 @@
         
         ///////////////////////////////////documentDataの初期化//////////////////////////////////////
         NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:documentData];
-        
+//        NSMutableDictionary *init_documentData = [[NSMutableDictionary alloc] initWithDictionary:imageData];//1127
+  
         [init_documentData removeAllObjects];
         
         documentData = init_documentData;
-        
+//        imageData = init_documentData;//1127
+
         [defaults setObject:documentData forKey:@"documentData"];
+//        [defaults setObject:imageData forKey:@"imageData"];//1127
         [defaults synchronize];
         //////////////////////////////////////////////////////////////////////////////////
         _takePictureFlag = NO;

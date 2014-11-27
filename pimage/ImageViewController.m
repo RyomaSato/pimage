@@ -27,12 +27,44 @@
 
     [_ivc_data writeToFile:_ivc_imageSavePath atomically:YES];
     NSDictionary *documentData = [defaults objectForKey:@"documentData"];
+ 
     NSDictionary *temp_second_dictionary = [[NSMutableDictionary alloc] initWithDictionary:documentData];
     NSMutableDictionary *second_dictionary = temp_second_dictionary.mutableCopy;
    
+    
+    
+//    //1126(途中)1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    NSDictionary *imageData = [defaults objectForKey:@"imageData"];
+    NSDictionary *temp_third_dictionary = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *third_dictionary = temp_third_dictionary.mutableCopy;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *number = [NSString stringWithFormat:@"%d", app.i];//1113
-    [second_dictionary setObject:_ivc_fileName forKey:number];
+
+    
+    
+    
+    
+    
+//    //1126(途中)11111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    [third_dictionary setObject:_ivc_fileName forKey:@"fileName"];
+   
+    imageData = third_dictionary;
+    
+    [defaults setObject:imageData forKey:@"imageData"];
+    [defaults synchronize];
+
+    
+    [second_dictionary setObject:third_dictionary forKey:number];
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+   // [second_dictionary setObject:_ivc_fileName forKey:number];
     
     documentData = second_dictionary;
     

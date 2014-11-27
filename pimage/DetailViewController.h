@@ -14,5 +14,6 @@
 
 @property(nonatomic,assign) NSDictionary *documentImageList;//1113
 
+@property(nonatomic,assign) NSString *documentDataKey;//1127
 
 @end
