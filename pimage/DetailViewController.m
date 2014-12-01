@@ -22,8 +22,11 @@
     NSInteger k;//1119
     NSInteger j;//1119
     UIView *uv;
-    NSInteger pinSum;//1127
-    
+    NSInteger pinSum;//1127(多分いらない1201)
+    UIView *_backView;//1201
+    BOOL _commentFlag;//1201
+    BOOL _dragFlag;//1201
+
 }
 
 const CGFloat kScrollObjHeight = 524.0;//1pageの高さ
@@ -97,20 +100,33 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                         
 //                        imageData = third_dictionary;
 //                        [defaults setObject:imageData forKey:@"imageData"];
-                        
 //                        [second_dictionary setObject:third_dictionary forKey:@"image"];
+
                         [second_dictionary setObject:third_dictionary forKey:number];
                         
                         [first_dictionary setObject:second_dictionary forKey:@"imageList"];
+                        
+                        
+//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1201(あとで)
+                        //ピンtagの最大No.を格納(1201)
+                        if (i==j) {
+                            
+                            NSInteger tag_max = i;
+                            [first_dictionary setObject:[NSNumber numberWithInteger:tag_max] forKey:@"tag_max"];
+                            
+                        }
+//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+
                         
                         [zero_dictionary setObject:first_dictionary forKey:_documentDataKey];
                         
                         [defaults setObject:zero_dictionary forKey:@"folder"];
                         [defaults synchronize];
                 
-                
+                        
                     }else{
                     }
+            
             }
         //////////////////////////////////////////////////////pinDataの初期化
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -125,6 +141,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
             [defaults synchronize];
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         }
+        
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
@@ -148,8 +165,23 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     NSDictionary *pin = [imageDictionary objectForKey:@"pinList"];//1126
     pinSum = pinSum + pin.count;
     }
-    
     NSLog(@"pinSum=%ld",pinSum);
+
+    
+    
+//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm1201(あとで)
+    //ピンtagの最大No.使った方が賢い
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *zero_dictionary = [defaults dictionaryForKey:@"folder"];
+    NSDictionary *first_dictionary = [zero_dictionary objectForKey:_documentDataKey];
+    NSNumber *nun_tag_max = [first_dictionary objectForKey:@"tag_max"];
+    NSInteger int_tag_max = nun_tag_max.integerValue;
+    
+    
+    NSLog(@"pintag_max=%ld",int_tag_max);
+//mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+    
+    
     
 //    NSUInteger i;
     for (i = 1; i <= kNumImages; i++)
@@ -194,6 +226,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     //jの初期値設定(ページと数字がかぶらないように設定)1119
     j = kNumImages;
     
+    
+    
+    ///////////////////////////////////////////////////////////tag_maxを使った方がいい
     for (int i; i<=kNumImages; i++) {
     
     NSString *number = [NSString stringWithFormat:@"%d", i];
@@ -216,6 +251,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
   
+    //コメントビューを作成
+    [self createView];
+    
     //総ページ数の取得
     kNumImages = _documentImageList.count;
     NSLog(@"総ページ数%ld",kNumImages);
@@ -339,6 +377,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
 
 
+
 //1119
 -(void)back{
     NSLog(@"backボタンが押されました");
@@ -362,6 +401,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         k = 1;
     }
 }
+
 
 
 //1119
@@ -434,9 +474,95 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         UIImageView* spe_imgview = (UIImageView*)[imgview viewWithTag:touch_imgview.tag];
         
         spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , point.y - spe_imgview.center.y);
+    
+        _dragFlag = YES;
+    
     }
     
 }
+
+
+
+
+
+
+
+// ユーザがタッチが終了したときに呼び出されるメソッド//1201
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [[event allTouches] anyObject];
+    
+    //現在のページを取得
+    UIImageView *imgview = (UIImageView*)[uv viewWithTag:k];
+ 
+    
+    // テキストビュー(後で1201)
+    CGRect rect = CGRectMake(0, 0, 320, 200);
+    UITextView *commentView = [[UITextView alloc] initWithFrame:rect];
+    commentView.editable = YES;
+    commentView.text = @"あいうえお\nかきくけこ";
+    
+    //        [imgview addSubview:commentView];
+
+    
+    if([touch view] == imgview){
+        
+        
+    }else{
+        
+        UIImageView* touch_imgview = (UIImageView*)[touch view];
+        UIImageView* spe_imgview = (UIImageView*)[imgview viewWithTag:touch_imgview.tag];
+        
+        NSLog(@"%ld",spe_imgview.tag);
+        
+     
+        
+//iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii__1201
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.3];
+        
+        if (_dragFlag) {
+            
+        }else{
+        
+            if (!_commentFlag) {
+            
+                imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 64, kScrollObjWidth, kScrollObjHeight);
+                _backView.frame = CGRectMake(0, 64, self.view.bounds.size.width, 250);
+            
+                _commentFlag = YES;
+            
+            }else{
+            
+                imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 0, kScrollObjWidth, kScrollObjHeight);
+                _backView.frame = CGRectMake(0, -64, self.view.bounds.size.width, 250);
+            
+                _commentFlag = NO;
+            }
+            
+        [UIView commitAnimations];
+//iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+        
+        }
+    }
+    
+    _dragFlag = NO;
+
+}
+
+
+
+
+///////////////////////////1201(試し)
+-(void)createView{
+    
+//    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 250)];
+    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, -186, self.view.bounds.size.width, 64)];
+    _backView.backgroundColor = [UIColor colorWithRed:0.192157 green:0.760784 blue:0.952941 alpha:1.0];
+    
+    [self.view addSubview:_backView];
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
