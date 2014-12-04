@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailViewController : UIViewController<UIScrollViewDelegate>
+@interface DetailViewController : UIViewController//<UIScrollViewDelegate>
 
 @property (nonatomic,assign) double select_num;//intからdoubleに変更11/1
 
