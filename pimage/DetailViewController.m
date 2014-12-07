@@ -28,10 +28,12 @@
     BOOL _dragFlag;//1201
     UITextView *commentView;
     NSInteger spe_num;//1207
+    
+    UIView *_toolview;//1207
 
 }
 
-const CGFloat kScrollObjHeight = 524.0;//1pageの高さ
+const CGFloat kScrollObjHeight = 460.0;//1pageの高さ
 const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
 
@@ -150,10 +152,6 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                         
                         
                         
-                        
-                        
-                        
-                        
                         [fifth_dictionary setObject:position_x forKey:@"position_x"];
                         [fifth_dictionary setObject:position_y forKey:@"position_y"];
                 
@@ -231,14 +229,14 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
 
 /////////////////////////////////////////////////////////////////////////////////1127
-    NSInteger i;
-    for (i = 1; i <= kNumImages; i++) {
-    NSString *number = [NSString stringWithFormat:@"%ld", i];
-    NSDictionary *imageDictionary = [_documentImageList objectForKey:number];//1126
-    NSDictionary *pin = [imageDictionary objectForKey:@"pinList"];//1126
-    pinSum = pinSum + pin.count;
-    }
-    NSLog(@"pinSum=%ld",pinSum);
+//    NSInteger i;
+//    for (i = 1; i <= kNumImages; i++) {
+//    NSString *number = [NSString stringWithFormat:@"%ld", i];
+//    NSDictionary *imageDictionary = [_documentImageList objectForKey:number];//1126
+//    NSDictionary *pin = [imageDictionary objectForKey:@"pinList"];//1126
+//    pinSum = pinSum + pin.count;
+//    }
+//    NSLog(@"pinSum=%ld",pinSum);
 
     
     
@@ -256,7 +254,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     
     
     
-//    NSUInteger i;
+    NSUInteger i;
     for (i = 1; i <= kNumImages; i++)
     {
         NSString *number = [NSString stringWithFormat:@"%ld", i];
@@ -271,28 +269,30 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 
         NSUInteger m;//1127
 //        for (m = kNumImages+1; m <= pin.count+kNumImages; m++) {
-        for (m = kNumImages+1; m <= pinSum+kNumImages; m++) {
+
+//1207        for (m = kNumImages+1; m <= pinSum+kNumImages; m++) {
+        for (m = kNumImages+1; m <= int_tag_max+kNumImages; m++) {
             NSString *no_pin = [NSString stringWithFormat:@"%ld", m];
             NSDictionary *pin_detail = [pin objectForKey:no_pin];
       
-        if (pin_detail) {
+            if (pin_detail) {
          
-            NSNumber *position_x = [pin_detail objectForKey:@"position_x"];
-            NSNumber *position_y = [pin_detail objectForKey:@"position_y"];
+                NSNumber *position_x = [pin_detail objectForKey:@"position_x"];
+                NSNumber *position_y = [pin_detail objectForKey:@"position_y"];
     
-            CGFloat x = position_x.floatValue;
-            CGFloat y = position_y.floatValue;
+                CGFloat x = position_x.floatValue;
+                CGFloat y = position_y.floatValue;
     
-            /* ビューを作成 */
-            CGRect rect = CGRectMake(x, y, 20, 30);
-            UIImageView *will_pinImageView = [[UIImageView alloc]initWithFrame:rect];
-            //myView.backgroundColor = [UIColor blueColor];
-            will_pinImageView.image = [UIImage imageNamed:@"pin.png"];
-            will_pinImageView.userInteractionEnabled = YES;
-            will_pinImageView.tag = m;//1119
-            [Image_imgview addSubview:will_pinImageView];
+                /* ビューを作成 */
+                CGRect rect = CGRectMake(x, y, 20, 30);
+                UIImageView *will_pinImageView = [[UIImageView alloc]initWithFrame:rect];
+                //myView.backgroundColor = [UIColor blueColor];
+                will_pinImageView.image = [UIImage imageNamed:@"pin1.png"];
+                will_pinImageView.userInteractionEnabled = YES;
+                will_pinImageView.tag = m;//1119
+                [Image_imgview addSubview:will_pinImageView];
         
-        }
+            }
         }
     }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -302,22 +302,29 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     k = 1;
     
     //jの初期値設定(ページと数字がかぶらないように設定)1119
-    j = kNumImages;
+    j = int_tag_max;
     
-    
-    
-    ///////////////////////////////////////////////////////////tag_maxを使った方がいい
-    for (int i; i<=kNumImages; i++) {
-    
-    NSString *number = [NSString stringWithFormat:@"%d", i];
-    NSDictionary *imageDictionary = [_documentImageList objectForKey:number];//1126
-    NSDictionary *pin = [imageDictionary objectForKey:@"pinList"];//1126
-   
-    j = j + pin.count;
-
+    if(j == 0){
+        j = kNumImages;
+    }else{
     }
     
+    ///////////////////////////////////////////////////////////tag_maxを使った方がいい!!!!!!!!!!!!!!!!!!!!!!!!
+//    for (int i; i<=kNumImages; i++) {
+//    
+//    NSString *number = [NSString stringWithFormat:@"%d", i];
+//    NSDictionary *imageDictionary = [_documentImageList objectForKey:number];//1126
+//    NSDictionary *pin = [imageDictionary objectForKey:@"pinList"];//1126
+//   
+//    j = j + pin.count;
+//
+//    }
+    
     NSLog(@"ピンのtag初期値%ld",j);
+    //toolbarを隠す
+    [self.navigationController setToolbarHidden:YES animated:NO];
+    
+
 }
 
 
@@ -333,9 +340,10 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [self createView];
     
     
+    
     // テキストビュー(後で1201)
-    CGRect rect = CGRectMake(0, 0, 320, 108);
-    commentView = [[UITextView alloc] initWithFrame:rect];//メンバ変数のが良いかな
+    CGRect rect = CGRectMake(0, 0, 320, 88);
+    commentView = [[UITextView alloc] initWithFrame:rect];
     commentView.editable = YES;
 //    commentView.text = @"あいうえお\nかきくけこ";
     [_backView addSubview:commentView];
@@ -351,16 +359,33 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 //    //jの初期値設定(ページと数字がかぶらないように設定)1119
 //    j = kNumImages;
     
+   
+    
+    //UIView_uvの生成1119
+    uv = [[UIView alloc] initWithFrame:CGRectMake(0,64,kScrollObjWidth*kNumImages,kScrollObjHeight)];//(navigationBarが上から64)
+    [self.view addSubview:uv];
+    //[scrollView addSubview:uv];
+    
+    
+    //UIView_toolviewの生成1207
+    _toolview = [[UIView alloc] initWithFrame:CGRectMake(0, 524, self.view.bounds.size.width, 44)];
+//    _toolview.backgroundColor = [UIColor colorWithRed:0.192157 green:0.760784 blue:0.952941 alpha:1.0];
+    [self.view addSubview:_toolview];
+    
+    //ゴミ箱領域の設定1207
+    UILabel *trash = [[UILabel alloc] init];
+    trash.frame = CGRectMake(220, 10, 100, 30);
+    trash.backgroundColor = [UIColor grayColor];
+//    label.textColor = [UIColor blueColor];
+//    label.font = [UIFont fontWithName:@"AppleGothic" size:12];
+    trash.text = @"___trasharea";
+    [_toolview addSubview:trash];
+
+    
     
     [self setButton];
 
     
-    
-    // UIViewの生成1119
-    uv = [[UIView alloc] initWithFrame:CGRectMake(0,64,kScrollObjWidth*kNumImages,kScrollObjHeight)];//(navigationBarが上から64)
-    [self.view addSubview:uv];
-    //[scrollView addSubview:uv];
-
 
     NSUInteger i;
     
@@ -399,7 +424,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [self layoutScrollImages];
 
     //toolbarを隠す
-   // [self.navigationController setToolbarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
 }
 
@@ -413,16 +438,31 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     self.navigationItem.rightBarButtonItem = nvgRightBarButton;
     
     //ツールバーボタンの作成
-    //スペーサーの作成
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    //スペーサーの作成
+//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    
+//    UIBarButtonItem *toolLeftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(back)];
+//    
+//    UIBarButtonItem *toolRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(forward)];
+//    
+//    NSArray *items = [NSArray arrayWithObjects:spacer, toolLeftBarButton, spacer, spacer, spacer, toolRightBarButton, spacer, nil];
+//    self.toolbarItems = items;
     
-    UIBarButtonItem *toolLeftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(back)];
     
-    UIBarButtonItem *toolRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(forward)];
     
-    NSArray *items = [NSArray arrayWithObjects:spacer, toolLeftBarButton, spacer, spacer, spacer, toolRightBarButton, spacer, nil];
-    self.toolbarItems = items;
-
+    UIButton *toolLeftButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    toolLeftButton.frame = CGRectMake(10, 10, 100, 30);
+    [toolLeftButton setTitle:@"back" forState:UIControlStateNormal];
+    // ボタンがタッチダウンされた時にhogeメソッドを呼び出す
+    [toolLeftButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchDown];
+    [_toolview addSubview:toolLeftButton];
+    
+    UIButton *toolRightButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    toolRightButton.frame = CGRectMake(120, 10, 100, 30);
+    [toolRightButton setTitle:@"forward" forState:UIControlStateNormal];
+    // ボタンがタッチダウンされた時にhogeメソッドを呼び出す
+    [toolRightButton addTarget:self action:@selector(forward) forControlEvents:UIControlEventTouchDown];
+    [_toolview addSubview:toolRightButton];
     
 }
 
@@ -528,7 +568,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     CGRect rect = CGRectMake(160+j, 100+j, 20, 30);
     pinImageView = [[UIImageView alloc]initWithFrame:rect];
     //myView.backgroundColor = [UIColor blueColor];
-    pinImageView.image = [UIImage imageNamed:@"pin.png"];
+    pinImageView.image = [UIImage imageNamed:@"pin1.png"];
     pinImageView.userInteractionEnabled = YES;
     pinImageView.tag = j;//1119
     [imgview addSubview:pinImageView];
@@ -604,7 +644,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [commentView resignFirstResponder];
     
     
-    if([touch view] == imgview){
+    if([touch view] == imgview || [touch view] == _toolview){
     
     }else{
         
@@ -617,14 +657,84 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.3];
         
+       
+        
         if (_dragFlag) {
+            
+           
+            
+            
+            
+            //1207pinの移動可能範囲指定(ゴミ箱にドラッグ&ドロップ)
+            CGPoint point = [((UITouch*)[touches anyObject]) locationInView:self.view];
+            
+            if (point.y < 64){
+                NSLog(@"%ld",spe_imgview.tag);
+                spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 15 - spe_imgview.center.y);
+            }
+            else if (point.y > 524){
+             
+                if ((point.x > self.view.bounds.size.width - 100) && (self.view.bounds.size.width > point.x)) {
+                    
+                    [spe_imgview removeFromSuperview];
+                 
+                    
+                    //pinのデータ削除
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *zero_dictionary = [defaults dictionaryForKey:@"folder"];
+                    NSMutableDictionary *edit_zero_dictionary = zero_dictionary.mutableCopy;
+
+                    NSDictionary *first_dictionary = [edit_zero_dictionary objectForKey:_documentDataKey];
+                    NSMutableDictionary *edit_first_dictionary = first_dictionary.mutableCopy;
+
+                    NSDictionary *second_dictionary = [edit_first_dictionary objectForKey:@"imageList"];
+                    NSMutableDictionary *edit_second_dictionary = second_dictionary.mutableCopy;
+  
+                    NSString *number = [NSString stringWithFormat:@"%ld", k];
+                    NSDictionary *third_dictionary = [edit_second_dictionary objectForKey:number];
+                    NSMutableDictionary *edit_third_dictionary = third_dictionary.mutableCopy;
+                    
+                    NSDictionary *fourth_dictionary = [edit_third_dictionary objectForKey:@"pinList"];
+                    NSMutableDictionary *edit_fourth_dictionary = fourth_dictionary.mutableCopy;
+                    NSString *PinNum = [NSString stringWithFormat:@"%ld",spe_imgview.tag];
+                    
+                    [edit_fourth_dictionary removeObjectForKey:PinNum];
+                    
+                    [edit_third_dictionary setObject:edit_fourth_dictionary forKey:@"pinList"];
+                    [edit_second_dictionary setObject:edit_third_dictionary forKey:number];
+                    
+                    [edit_first_dictionary setObject:edit_second_dictionary forKey:@"imageList"];
+                    
+                    [edit_zero_dictionary setObject:edit_first_dictionary forKey:_documentDataKey];
+                    
+                    [defaults setObject:edit_zero_dictionary forKey:@"folder"];
+                    [defaults synchronize];
+                    
+                    return;
+                
+                }
+                spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 445 -spe_imgview.center.y);
+            
+            }else{
+            }
+            
+            
+          
+            
+            
             
         }else{
         
             if (!_commentFlag) {
+                
+                //ピンの選択
+                spe_imgview.image = [UIImage imageNamed:@"pin2.png"];//1207
             
                 imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 44, kScrollObjWidth, kScrollObjHeight);
-                _backView.frame = CGRectMake(0, 20, self.view.bounds.size.width, 108);
+                _backView.frame = CGRectMake(0, 20, self.view.bounds.size.width, 88);
+               
+                //1207
+                _toolview.frame = CGRectMake(0, 564, self.view.bounds.size.width, 44);
 
                 [self.view bringSubviewToFront:_backView];
                 
@@ -660,6 +770,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
             
             }else if (spe_imgview.tag == spe_num){//1207
                 
+                //ピンの選択解除
+                spe_imgview.image = [UIImage imageNamed:@"pin1.png"];//1207
+                
                 [UIView beginAnimations:nil context:nil];
                 [UIView setAnimationDuration:0.3];
                 
@@ -667,11 +780,15 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                 UIImageView *imgview = (UIImageView*)[uv viewWithTag:k];//1201
                 
                 imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 0, kScrollObjWidth, kScrollObjHeight);
-                _backView.frame = CGRectMake(0, -108, self.view.bounds.size.width, 108);
+                _backView.frame = CGRectMake(0, -108, self.view.bounds.size.width, 88);
+                
+                //1207
+                _toolview.frame = CGRectMake(0, 524, self.view.bounds.size.width, 44);
+                [self.view bringSubviewToFront:_toolview];
                 
                 //Navigation_&_ToolBar非表示
                 [self.navigationController setNavigationBarHidden:NO animated:YES];//1203
-                [self.navigationController setToolbarHidden:NO animated:YES];//1203
+            //    [self.navigationController setToolbarHidden:NO animated:YES];//1203
                 
                 _commentFlag = NO;
                 
@@ -767,13 +884,12 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
 -(void)createView{
     
 //    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 250)];
-    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 64)];
+    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 88)];
     _backView.backgroundColor = [UIColor colorWithRed:0.192157 green:0.760784 blue:0.952941 alpha:1.0];
     
     [self.view addSubview:_backView];
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 
