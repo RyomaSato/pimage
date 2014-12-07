@@ -27,6 +27,7 @@
     BOOL _commentFlag;//1201
     BOOL _dragFlag;//1201
     UITextView *commentView;
+    NSInteger spe_num;//1207
 
 }
 
@@ -66,10 +67,37 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                 NSString *number = [NSString stringWithFormat:@"%d", l];
                 NSDictionary *temp_third_dictionary = [second_dictionary objectForKey:number];
                 NSMutableDictionary *third_dictionary = temp_third_dictionary.mutableCopy;
+
+//1205
+//                NSDictionary *temp_fourth_dictionary = [[NSMutableDictionary alloc] initWithDictionary:pinData];//pinDataいらないかも
+//                NSMutableDictionary *fourth_dictionary = temp_fourth_dictionary.mutableCopy;
+
                 
-                NSDictionary *temp_fourth_dictionary = [[NSMutableDictionary alloc] initWithDictionary:pinData];//pinDataいらないかも
+                //1205
+                NSDictionary *temp_fourth_dictionary = [third_dictionary objectForKey:@"pinList"];
                 NSMutableDictionary *fourth_dictionary = temp_fourth_dictionary.mutableCopy;
 
+                
+                
+                
+                
+                
+                //if文で4th&5thDictionaryの初期設定をする(それぞれのDictionaryがnillのとき)1206
+                if(!fourth_dictionary){
+                    
+                    NSDictionary *temp_init_fourth_dictionary = [[NSMutableDictionary alloc] init];
+                    NSMutableDictionary *init_fourth_dictionary = temp_init_fourth_dictionary.mutableCopy;
+                    
+                    fourth_dictionary = init_fourth_dictionary;
+                    
+                }else{
+                    
+                }
+
+                
+                
+                
+                
    
 //1204
 //                NSDictionary *temp_fifth_dictionary = [[NSMutableDictionary alloc] init];
@@ -101,6 +129,31 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                         NSMutableDictionary *fifth_dictionary = temp_fifth_dictionary.mutableCopy;
        //                 NSString *comment = [fifth_dictionary objectForKey:@"comment"];
 
+                       
+                     
+                        
+                        
+                        
+                        
+                        
+                        //if文で4th&5thDictionaryの初期設定をする(それぞれのDictionaryがnillのとき)1206
+                        if(!fifth_dictionary){
+                            
+                            NSDictionary *temp_init_fifth_dictionary = [[NSMutableDictionary alloc] init];
+                            NSMutableDictionary *init_fifth_dictionary = temp_init_fifth_dictionary.mutableCopy;
+                            
+                            fifth_dictionary = init_fifth_dictionary;
+                            
+                        }else{
+                            
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         [fifth_dictionary setObject:position_x forKey:@"position_x"];
                         [fifth_dictionary setObject:position_y forKey:@"position_y"];
                 
@@ -142,18 +195,24 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                     }
             
             }
-        //////////////////////////////////////////////////////pinDataの初期化
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSDictionary *pinData = [defaults dictionaryForKey:@"pinData"];
-            NSMutableDictionary *init_pinData = [[NSMutableDictionary alloc] initWithDictionary:pinData];
             
-            [init_pinData removeAllObjects];
             
-            pinData = init_pinData;
-            
-            [defaults setObject:pinData forKey:@"pinData"];
-            [defaults synchronize];
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+//1205
+//        //////////////////////////////////////////////////////pinDataの初期化
+//            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//            NSDictionary *pinData = [defaults dictionaryForKey:@"pinData"];
+//            NSMutableDictionary *init_pinData = [[NSMutableDictionary alloc] initWithDictionary:pinData];
+//            
+//            [init_pinData removeAllObjects];
+//            
+//            pinData = init_pinData;
+//            
+//            [defaults setObject:pinData forKey:@"pinData"];
+//            [defaults synchronize];
+//        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
         }
         
 
@@ -597,10 +656,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                 
                 commentView.text = comment;
 
-                
-                
+                spe_num = spe_imgview.tag;
             
-            }else{
+            }else if (spe_imgview.tag == spe_num){//1207
                 
                 [UIView beginAnimations:nil context:nil];
                 [UIView setAnimationDuration:0.3];
@@ -645,6 +703,30 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                     NSDictionary *temp_fifth_dictionary = [fourth_dictionary objectForKey:PinNum];
                     NSMutableDictionary *fifth_dictionary = temp_fifth_dictionary.mutableCopy;
                 
+                
+                
+                    //if文で4th&5thDictionaryの初期設定をする(それぞれのDictionaryがnillのとき)
+                    if(!fourth_dictionary){
+                    
+                        NSDictionary *temp_init_fourth_dictionary = [[NSMutableDictionary alloc] init];
+                        NSMutableDictionary *init_fourth_dictionary = temp_init_fourth_dictionary.mutableCopy;
+
+                        fourth_dictionary = init_fourth_dictionary;
+                        
+                    }else{
+                    }
+                
+                
+                    if(!fifth_dictionary){
+                        NSDictionary *temp_init_fifth_dictionary = [[NSMutableDictionary alloc] init];
+                        NSMutableDictionary *init_fifth_dictionary = temp_init_fifth_dictionary.mutableCopy;
+
+                        fifth_dictionary = init_fifth_dictionary;
+
+                    }else{
+                    }
+                
+                
                     NSString *comment = commentView.text;
                 
                     [fifth_dictionary setObject:comment forKey:@"comment"];
@@ -655,7 +737,7 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                         
                     [defaults setObject:fourth_dictionary forKey:@"pinData"];
                         
-                    [third_dictionary setObject:fourth_dictionary forKey:@"pinList"];
+                    [third_dictionary setObject:fourth_dictionary forKey:@"pinList"];//ここで止まる(fourthdictionaryが使える形で存在しないfifthも同様)＿backを押したときも同じ理由かも
                 
                     [second_dictionary setObject:third_dictionary forKey:number];
                         
