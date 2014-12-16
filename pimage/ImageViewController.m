@@ -96,24 +96,34 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    UIView *belowV = [[UIView alloc] init];
-    belowV.frame = CGRectMake(0, 528, 320, 40);
-    belowV.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:belowV];
+//    UIView *belowV = [[UIView alloc] init];
+//    belowV.frame = CGRectMake(0, 528, 320, 40);
+//    belowV.backgroundColor = [UIColor grayColor];
+//    [self.view addSubview:belowV];
+    
+    
+    self.view.backgroundColor = [UIColor colorWithRed:0.122 green:0.122 blue:0.122 alpha:1.0];
+
     
     
     UIButton *usePhoto = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    usePhoto.frame = CGRectMake(200, 0, 100, 40);
-    [usePhoto setTitle:@"UsePhoto" forState:UIControlStateNormal];
+    usePhoto.frame = CGRectMake(190, 510, 120, 34);
+    UIImage *use_photo = [UIImage imageNamed:@"use_photo.png"];  // ボタンにする画像を生成する
+    [usePhoto setBackgroundImage:use_photo forState:UIControlStateNormal];  // 画像をセットする
+    //[usePhoto setTitle:@"UsePhoto" forState:UIControlStateNormal];
     [usePhoto addTarget:self action:@selector(usePhoto:) forControlEvents:UIControlEventTouchDown];
-    [belowV addSubview:usePhoto];
+   // [belowV addSubview:usePhoto];
+    [self.view addSubview:usePhoto];
     
     UIButton *retake = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    retake.frame = CGRectMake(20, 0, 100, 40);
-    [retake setTitle:@"Retake" forState:UIControlStateNormal];
+    retake.frame = CGRectMake(10, 510, 120, 34);
+    UIImage *img_retake = [UIImage imageNamed:@"retake.png"];  // ボタンにする画像を生成する
+    [retake setBackgroundImage:img_retake forState:UIControlStateNormal];  // 画像をセットする
+    //[retake setTitle:@"Retake" forState:UIControlStateNormal];
     [retake addTarget:self action:@selector(retake:) forControlEvents:UIControlEventTouchDown];
-    [belowV addSubview:retake];
-    
+   // [belowV addSubview:retake];
+    [self.view addSubview:retake];
+
     
     present_imageView = [[UIImageView alloc] init];
     present_imageView.frame = CGRectMake(0, 60, 320, 420);

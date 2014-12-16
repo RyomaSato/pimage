@@ -46,13 +46,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    
     _documentListTableView.delegate = self;
     _documentListTableView.dataSource = self;
     
+    //navigationbar
+    self.navigationController.navigationBar.barTintColor= [UIColor colorWithRed:0.925 green:0.490 blue:0.380 alpha:1.0];
+    self.navigationController.navigationBar.tintColor= [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0];
+
+    
     //toolBarの作成
     [self.navigationController setToolbarHidden:NO animated:NO];
-    self.navigationController.toolbar.tintColor = [UIColor grayColor];
-    
+    //self.navigationController.toolbar.tintColor = [UIColor grayColor];
+    self.navigationController.toolbar.barTintColor= [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0];
+
     [self setButton];
     
     
@@ -67,8 +74,8 @@
 
 
 
--(void)edit{
-    NSLog(@"editボタンが押されました");
+-(void)info{
+    NSLog(@"infoボタンが押されました");
    
     
 }
@@ -90,26 +97,59 @@
 }
 
 
--(void)trash{
-    NSLog(@"trashボタンが押されました");
-}
+//-(void)trash{
+//    NSLog(@"trashボタンが押されました");
+//}
 
 
 -(void)setButton{
     
-    UIBarButtonItem *nvgRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit)];
+//    UIBarButtonItem *nvgRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(info)];
+//    self.navigationItem.rightBarButtonItem = nvgRightBarButton;
+  
+    //ナビゲーションボタン作成1214
+    UIButton *uibtn_info = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    uibtn_info.frame = CGRectMake(0, 0, 36, 36);
+    UIImage *img_info = [UIImage imageNamed:@"info.png"];  // ボタンにする画像を生成する
+    [uibtn_info setBackgroundImage:img_info forState:UIControlStateNormal];  // 画像をセットする
+    [uibtn_info addTarget:self action:@selector(info) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *nvgRightBarButton =[[UIBarButtonItem alloc] initWithCustomView:uibtn_info];
     self.navigationItem.rightBarButtonItem = nvgRightBarButton;
+   
     
+    
+    
+//    //スペーサーの作成
+//    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    
+//    UIBarButtonItem *toolBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(camera)];
+// 
+////    UIBarButtonItem *toolRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trash)];
+//    
+//    NSArray *items = [NSArray arrayWithObjects:spacer, toolBarButton, spacer, nil];
+//    self.toolbarItems = items;
+    
+
+
+    //ツールバーボタン作成1214
     //スペーサーの作成
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIBarButtonItem *toolLeftBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(camera)];
-    
-    UIBarButtonItem *toolRightBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trash)];
-    
-    NSArray *items = [NSArray arrayWithObjects:spacer, toolLeftBarButton, spacer, spacer, spacer, toolRightBarButton, spacer, nil];
+
+    UIButton *uibtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    uibtn.frame = CGRectMake(0, 0, 300, 34);
+    UIImage *img_open_camera = [UIImage imageNamed:@"open_camera.png"];  // ボタンにする画像を生成する
+    [uibtn setBackgroundImage:img_open_camera forState:UIControlStateNormal];  // 画像をセットする
+    [uibtn addTarget:self action:@selector(camera) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *toolBarButton =[[UIBarButtonItem alloc] initWithCustomView:uibtn];
+    NSArray *items = [NSArray arrayWithObjects:spacer,toolBarButton,spacer,nil];
     self.toolbarItems = items;
+
     
+
+
+
+
+
 }
 
 

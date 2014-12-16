@@ -46,14 +46,13 @@
     // Do any additional setup after loading the view.
     [self performSelector:@selector(openCamera) withObject:nil afterDelay:0.01];
    
-    
+    //self.viewのcolor変更
+    self.view.backgroundColor = [UIColor colorWithRed:0.122 green:0.122 blue:0.122 alpha:1.0];
      _cameraViewFlag = NO;
     _takePictureFlag = NO;
     
     
 }
-
-
 
 
 
@@ -69,25 +68,29 @@
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.showsCameraControls = NO;
-        imagePickerController.view.frame = CGRectMake(0, 40, 320, 528);
-        
-//        [[self.view superview] addSubview:imagePickerController.view];
+        imagePickerController.view.frame = CGRectMake(0, 64, 320, 426);//(カメラ画面サイズ426)
+//       [[self.view superview] addSubview:imagePickerController.view];
         [self.view addSubview:imagePickerController.view];
  
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn.frame = CGRectMake(110, 460, 100, 30);
-        [btn setTitle:@"takepicture" forState:UIControlStateNormal];
-        
+        btn.frame = CGRectMake(124, 490, 72, 75);
+        UIImage *take_photo = [UIImage imageNamed:@"take_photo.png"];  // ボタンにする画像を生成する
+        [btn setBackgroundImage:take_photo forState:UIControlStateNormal];  // 画像をセットする
+       // [btn setTitle:@"takepicture" forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchDown];
-        [imagePickerController.view addSubview:btn];
+       // [imagePickerController.view addSubview:btn];
+        [self.view addSubview:btn];
+      
         
         UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn2.frame = CGRectMake(0, 460, 100, 30);
-        [btn2 setTitle:@"Cancel" forState:UIControlStateNormal];
-        
+        btn2.frame = CGRectMake(220, 25, 90, 30);
+        UIImage *save = [UIImage imageNamed:@"save.png"];  // ボタンにする画像を生成する
+        [btn2 setBackgroundImage:save forState:UIControlStateNormal];  // 画像をセットする
+        //[btn2 setTitle:@"Cancel" forState:UIControlStateNormal];
         [btn2 addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchDown];
-        [imagePickerController.view addSubview:btn2];
+        [self.view addSubview:btn2];
+      //  [imagePickerController.view addSubview:btn2];
         
 //        //navigationbarを隠す
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
