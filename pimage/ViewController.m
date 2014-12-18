@@ -54,7 +54,14 @@
     self.navigationController.navigationBar.barTintColor= [UIColor colorWithRed:0.925 green:0.490 blue:0.380 alpha:1.0];
     self.navigationController.navigationBar.tintColor= [UIColor colorWithRed:1.000 green:1.000 blue:1.000 alpha:1.0];
 
-    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0,10,90,25)];
+    label.text = [NSString stringWithFormat:@"pimage"];
+    label.font = [UIFont fontWithName:@"Arial" size:20];
+    label.textColor = [UIColor whiteColor];
+    // label.backgroundColor = [UIColor yellowColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = label;
+
     //toolBarの作成
     [self.navigationController setToolbarHidden:NO animated:NO];
     //self.navigationController.toolbar.tintColor = [UIColor grayColor];
@@ -76,9 +83,28 @@
 
 -(void)info{
     NSLog(@"infoボタンが押されました");
-   
+    
+//    //ビュワーを開く
+//    if(!infoViewController){
+//        
+//        infoViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"InfoViewController"];
+//        
+//    }
+//    
+////    //ここでiのnumberを受け渡す
+////    // imageViewController.num = i;
+//    
+//    //モーダルとして表示
+//    [self presentViewController:infoViewController animated:NO completion:nil];
+
+    
+    InfoViewController *dvc = [self.storyboard instantiateViewControllerWithIdentifier:@"InfoViewController"];
+    [[self navigationController]pushViewController:dvc animated:YES];
+
+    
     
 }
+
 
 
 -(void)camera{
@@ -371,7 +397,7 @@
     if([gestureRecognizer state] == UIGestureRecognizerStateBegan){
         NSLog(@"longtapbegan");
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"名称変更"
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Renaming"
                                                           message:nil
                                                          delegate:self
                                                 cancelButtonTitle:@"Cancel"

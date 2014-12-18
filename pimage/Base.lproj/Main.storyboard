@@ -53,6 +53,25 @@
             </objects>
             <point key="canvasLocation" x="1466" y="775"/>
         </scene>
+        <!--Info View Controller-->
+        <scene sceneID="vUk-Ij-BBl">
+            <objects>
+                <viewController storyboardIdentifier="InfoViewController" id="Lke-Dm-l0G" customClass="InfoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zbs-H3-jS2"/>
+                        <viewControllerLayoutGuide type="bottom" id="6aZ-vW-Zcj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gd4-Fx-ikJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8JR-Xa-Oqd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="644" y="775"/>
+        </scene>
         <!--Camera View Controller-->
         <scene sceneID="7bT-Gs-35M">
             <objects>

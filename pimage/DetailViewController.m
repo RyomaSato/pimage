@@ -338,6 +338,14 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [self createView];
     
     
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0,10,90,25)];
+    label.text = [NSString stringWithFormat:@"pimage"];
+    label.font = [UIFont fontWithName:@"Arial" size:20];
+    label.textColor = [UIColor whiteColor];
+    // label.backgroundColor = [UIColor yellowColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = label;
+    
     
     // テキストビュー(後で1201)
     CGRect rect = CGRectMake(0, 0, 320, 122);

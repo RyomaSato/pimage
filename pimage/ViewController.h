@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ImageViewController.h"//1124
 #import "CameraViewController.h"//1124
+#import "InfoViewController.h"//1218
 
 @interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIAlertViewDelegate>{
 
@@ -17,6 +18,7 @@
     ImageViewController *imageViewController;//1124
     CameraViewController *cameraViewController;//1125
     BOOL _cameraViewFlag;//試し1125
+    InfoViewController *infoViewController;//1124
 
 }
 
