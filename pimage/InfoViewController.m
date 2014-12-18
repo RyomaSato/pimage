@@ -82,6 +82,9 @@ const NSUInteger kNumImages    = 6;    //(※3)総page数
 //        
 //    [self.view addSubview:pageControl];
    
+    //self.viewのcolor変更
+    self.view.backgroundColor = [UIColor colorWithRed:0.122 green:0.122 blue:0.122 alpha:1.0];
+
     
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0,10,90,25)];
         label.text = [NSString stringWithFormat:@"tutorial"];
