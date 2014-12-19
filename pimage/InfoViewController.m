@@ -16,9 +16,9 @@
     UIScrollView *scrollView;
     UIPageControl *pageControl;
    }
-const CGFloat kScrollObjHeight = 568.0;//(※1)1pageの高さ
-const CGFloat kScrollObjWidth  = 320.0;//(※2)1pageの幅
-const NSUInteger kNumImages    = 6;    //(※3)総page数
+const CGFloat info_kScrollObjHeight = 568.0;//(※1)1pageの高さ
+const CGFloat info_kScrollObjWidth  = 320.0;//(※2)1pageの幅
+const NSUInteger info_kNumImages    = 6;    //(※3)総page数
 
 
 - (void)layoutScrollImages
@@ -35,12 +35,12 @@ const NSUInteger kNumImages    = 6;    //(※3)総page数
             frame.origin = CGPointMake(curXLoc + 18, 64);
             view.frame = frame;
             
-            curXLoc += (kScrollObjWidth);
+            curXLoc += (info_kScrollObjWidth);
         }
     }
     
     //スクロールの総範囲
-    [scrollView setContentSize:CGSizeMake((kNumImages * kScrollObjWidth), kScrollObjHeight)];
+    [scrollView setContentSize:CGSizeMake((info_kNumImages * info_kScrollObjWidth), info_kScrollObjHeight)];
     
     
 }
@@ -98,7 +98,7 @@ const NSUInteger kNumImages    = 6;    //(※3)総page数
 
     NSUInteger i;
     
-    for (i = 1; i <= kNumImages; i++)
+    for (i = 1; i <= info_kNumImages; i++)
     {
         NSString *imageName = [NSString stringWithFormat:@"tutorial%ld.png", i];
         UIImage *image = [UIImage imageNamed:imageName];

@@ -30,13 +30,13 @@
     NSInteger spe_num;//1207
     
     UIView *_toolview;//1207
-
+    
 }
+
+
 
 const CGFloat kScrollObjHeight = 460.0;//1pageの高さ
 const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
-
-
 
 ////戻るボタンの認識
 - (void)viewWillDisappear:(BOOL)animated
