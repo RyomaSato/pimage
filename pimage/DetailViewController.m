@@ -337,7 +337,6 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     //コメントビューを作成
     [self createView];
     
-    
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0,10,90,25)];
     label.text = [NSString stringWithFormat:@"pimage"];
     label.font = [UIFont fontWithName:@"Arial" size:20];
@@ -348,7 +347,8 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     
     
     // テキストビュー(後で1201)
-    CGRect rect = CGRectMake(0, 0, 320, 122);
+//0211    CGRect rect = CGRectMake(0, 0, 320, 122);
+    CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height -(20 + 426 * self.view.bounds.size.height/568));//0211
     commentView = [[UITextView alloc] initWithFrame:rect];
     commentView.editable = YES;
 //    commentView.text = @"あいうえお\nかきくけこ";
@@ -368,17 +368,22 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
    
     
     //UIView_uvの生成1119
-    uv = [[UIView alloc] initWithFrame:CGRectMake(0,64,kScrollObjWidth*kNumImages,kScrollObjHeight)];//(navigationBarが上から64)
+//0211    uv = [[UIView alloc] initWithFrame:CGRectMake(0,64,kScrollObjWidth*kNumImages,kScrollObjHeight)];//(navigationBarが上から64)
+    
+    uv = [[UIView alloc] initWithFrame:CGRectMake(0,64,kNumImages * self.view.bounds.size.width,self.view.bounds.size.height - 108)];//(navigationBarが上から64)
     uv.backgroundColor = [UIColor colorWithRed:0.122 green:0.122 blue:0.122 alpha:1.0];
     [self.view addSubview:uv];
     //[scrollView addSubview:uv];
     
     
     //UIView_toolviewの生成1207
-    _toolview = [[UIView alloc] initWithFrame:CGRectMake(0, 524, self.view.bounds.size.width, 44)];
-//    _toolview.backgroundColor = [UIColor colorWithRed:0.192157 green:0.760784 blue:0.952941 alpha:1.0];
-    [self.view addSubview:_toolview];
+//0211     _toolview = [[UIView alloc] initWithFrame:CGRectMake(0, 524, self.view.bounds.size.width, 44)];
     
+    _toolview = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 44, self.view.bounds.size.width, 44 )];
+//    _toolview.backgroundColor = [UIColor colorWithRed:0.192157 green:0.760784 blue:0.952941 alpha:1.0];
+
+    [self.view addSubview:_toolview];
+  
     
     
 //    //ゴミ箱領域の設定1207
@@ -394,7 +399,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     //ゴミ箱領域の設定1214
     UIImage *img_trash = [UIImage imageNamed:@"trash_area.png"];
     UIImageView *iv_trash = [[UIImageView alloc] initWithImage:img_trash];
-    iv_trash.frame = CGRectMake(210, 5, 100, 34);
+//0211    iv_trash.frame = CGRectMake(210, 5, 100, 34);
+    
+    iv_trash.frame = CGRectMake(self.view.bounds.size.width - 110, 5, 100, 34);
     [_toolview addSubview:iv_trash];
 
 
@@ -428,8 +435,13 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         imageView.userInteractionEnabled = YES;
         
         CGRect rect = imageView.frame;
-        rect.size.height = kScrollObjHeight-34;//1216
+/*        rect.size.height = kScrollObjHeight-34;//1216
         rect.size.width = kScrollObjWidth;
+*/
+       
+        rect.size.height = (kScrollObjHeight-34) * self.view.bounds.size.height/568;//1216
+        rect.size.width = kScrollObjWidth * self.view.bounds.size.width/320;
+        
         imageView.frame = rect;
         imageView.tag = i;
         
@@ -479,7 +491,10 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     
     
     UIButton *toolLeftButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    toolLeftButton.frame = CGRectMake(34, 5, 36, 36);
+//0211    toolLeftButton.frame = CGRectMake(34, 5, 36, 36);
+    
+    toolLeftButton.frame = CGRectMake(34 * self.view.bounds.size.width/320, 5, 36, 36);
+    
     UIImage *img_back = [UIImage imageNamed:@"back.png"];  // ボタンにする画像を生成する
     [toolLeftButton setBackgroundImage:img_back forState:UIControlStateNormal];  // 画像をセットする
     //[toolLeftButton setTitle:@"back" forState:UIControlStateNormal];
@@ -488,7 +503,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
     [_toolview addSubview:toolLeftButton];
     
     UIButton *toolRightButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    toolRightButton.frame = CGRectMake(125, 5, 36, 36);
+//0211    toolRightButton.frame = CGRectMake(125, 5, 36, 36);
+ 
+    toolRightButton.frame = CGRectMake(125 * self.view.bounds.size.width/320, 5, 36, 36);
     UIImage *img_forward = [UIImage imageNamed:@"forward.png"];  // ボタンにする画像を生成する
     [toolRightButton setBackgroundImage:img_forward forState:UIControlStateNormal];  // 画像をセットする
     //[toolRightButton setTitle:@"forward" forState:UIControlStateNormal];
@@ -513,10 +530,13 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         if ([view isKindOfClass:[UIImageView class]] && view.tag > 0)
         {
             CGRect frame = view.frame;
-            frame.origin = CGPointMake(curXLoc, 17);//1216
+//0211            frame.origin = CGPointMake(curXLoc, 17);//1216
+      
+            frame.origin = CGPointMake(curXLoc, (self.view.bounds.size.height - 426 * self.view.bounds.size.height/568 - 108)/2);//0211
             view.frame = frame;
             
-            curXLoc += (kScrollObjWidth);
+//0211            curXLoc += (kScrollObjWidth);
+            curXLoc += (self.view.bounds.size.width);//0211
         }
     }
     
@@ -543,7 +563,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];  // アニメーションは一定速度
         // self.view.transform = CGAffineTransformMakeTranslation(-(k-2)*kScrollObjWidth, 0);
         
-        uv.transform = CGAffineTransformMakeTranslation(-(k-2)*kScrollObjWidth, 0);
+//0211        uv.transform = CGAffineTransformMakeTranslation(-(k-2)*kScrollObjWidth, 0);
+
+        uv.transform = CGAffineTransformMakeTranslation(-(k-2)*self.view.bounds.size.width, 0);
         //scrollView.transform = CGAffineTransformMakeTranslation(-(k-2)*kScrollObjWidth, 0);//1201
   
         [UIView commitAnimations];  // アニメーション開始
@@ -571,7 +593,9 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];  // アニメーションは一定速度
         //self.view.transform = CGAffineTransformMakeTranslation(-k*kScrollObjWidth, 0);
 
-        uv.transform = CGAffineTransformMakeTranslation(-k*kScrollObjWidth, 0);
+//0211        uv.transform = CGAffineTransformMakeTranslation(-k*kScrollObjWidth, 0);
+        uv.transform = CGAffineTransformMakeTranslation(-k*self.view.bounds.size.width, 0);
+
         //scrollView.transform = CGAffineTransformMakeTranslation(-k*kScrollObjWidth, 0);//1201
 
         [UIView commitAnimations];  // アニメーション開始
@@ -694,19 +718,22 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
         if (_dragFlag) {
             
            
-            
-            
+            if (!_commentFlag) {//0211
+                
             
             //1207pinの移動可能範囲指定(ゴミ箱にドラッグ&ドロップ)
             CGPoint point = [((UITouch*)[touches anyObject]) locationInView:self.view];
             
-            if (point.y < 84){
+            if (point.y < 70 + (self.view.bounds.size.height - 426 * self.view.bounds.size.height/568 - 108)/2){
                 NSLog(@"%ld",spe_imgview.tag);
+                NSLog(@"%f",point.x);
+                NSLog(@"%f",spe_imgview.center.x);
+                NSLog(@"%f", spe_imgview.center.y);
                 spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 15 - spe_imgview.center.y);
                 
-            }else if (point.y > 507){
+            }else if (point.y > self.view.bounds.size.height - (44 + (self.view.bounds.size.height - 426 * self.view.bounds.size.height/568 - 108)/2)){
              
-                if ((point.y > 524) && (point.x > self.view.bounds.size.width - 110) && (self.view.bounds.size.width > point.x)) {
+                if ((point.y > self.view.bounds.size.height - 44) && (point.x > self.view.bounds.size.width - 110) && (self.view.bounds.size.width > point.x)) {
                     
                     [spe_imgview removeFromSuperview];
                  
@@ -745,15 +772,25 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                     return;
                 
                 }
-                spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 410 -spe_imgview.center.y);
-            
-            }else{
+                NSLog(@"%f",spe_imgview.center.y);
+//0217              spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 410 -spe_imgview.center.y);
+                spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x ,self.view.bounds.size.height - (64 + 15 + 44 + 2*(self.view.bounds.size.height - 426 * self.view.bounds.size.height/568 - 108)/2) -spe_imgview.center.y);
+                
+                }else{
             }
             
             
-          
+            }else{//0211
             
-            
+                //pinの移動可能範囲指定(ゴミ箱にドラッグ&ドロップ)
+                CGPoint point = [((UITouch*)[touches anyObject]) locationInView:self.view];
+                
+                if (point.y < self.view.bounds.size.height - 426 * self.view.bounds.size.height/568){
+                    NSLog(@"%ld",spe_imgview.tag);
+                    spe_imgview.transform = CGAffineTransformMakeTranslation(point.x - spe_imgview.center.x , 15 - spe_imgview.center.y);
+             
+                }
+            }//0211
             
         }else{
         
@@ -762,12 +799,20 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                 //ピンの選択
                 spe_imgview.image = [UIImage imageNamed:@"pin_red.png"];//1207
             
-                imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 78, kScrollObjWidth, kScrollObjHeight-34);
-                _backView.frame = CGRectMake(0, 20, self.view.bounds.size.width, 122);
+        //0211   imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 78, kScrollObjWidth, kScrollObjHeight-34);
+                
+                _backView.frame = CGRectMake(0, 20, self.view.bounds.size.width, self.view.bounds.size.height -(20 + 426 * self.view.bounds.size.height/568));
                
                 //1207
-                _toolview.frame = CGRectMake(0, 564, self.view.bounds.size.width, 44);
+//0211                _toolview.frame = CGRectMake(0, 564, self.view.bounds.size.width, 44);
+                
+                //0211
+                _toolview.frame = CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 44);
 
+                
+                //0211
+                uv.frame = CGRectMake(-self.view.bounds.size.width*(imgview.tag-1),self.view.bounds.size.height -426 * self.view.bounds.size.height/568 - (self.view.bounds.size.height - 426 * self.view.bounds.size.height/568 - 108)/2 ,kNumImages * self.view.bounds.size.width,self.view.bounds.size.height - 108);
+                
                 [self.view bringSubviewToFront:_backView];
                 
                 
@@ -811,11 +856,19 @@ const CGFloat kScrollObjWidth  = 320.0;//1pageの幅
                 //    UIImageView *imgview = (UIImageView*)[scrollView viewWithTag:k];//1201
                 UIImageView *imgview = (UIImageView*)[uv viewWithTag:k];//1201
                 
-                imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 17, kScrollObjWidth, kScrollObjHeight-34);
-                _backView.frame = CGRectMake(0, -144, self.view.bounds.size.width, 122);
+        //0211  imgview.frame = CGRectMake(kScrollObjWidth*(imgview.tag-1), 17, kScrollObjWidth, kScrollObjHeight-34);
+                _backView.frame = CGRectMake(0, -144, self.view.bounds.size.width, self.view.bounds.size.height -(20 + 426 * self.view.bounds.size.height/568));
                 
                 //1207
-                _toolview.frame = CGRectMake(0, 524, self.view.bounds.size.width, 44);
+//0211                _toolview.frame = CGRectMake(0, 524, self.view.bounds.size.width, 44);
+                //0211
+                _toolview.frame = CGRectMake(0, self.view.bounds.size.height - 44, self.view.bounds.size.width, 44);
+
+                
+                //0211
+                uv.frame = CGRectMake(-kScrollObjWidth*(imgview.tag-1),64,kNumImages * self.view.bounds.size.width,self.view.bounds.size.height - 108);
+
+                
                 [self.view bringSubviewToFront:_toolview];
                 
                 //Navigation_&_ToolBar非表示

@@ -107,7 +107,9 @@
     
     
     UIButton *usePhoto = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    usePhoto.frame = CGRectMake(190, 510, 120, 34);
+//0211    usePhoto.frame = CGRectMake(190, 510, 120, 34);
+    
+    usePhoto.frame = CGRectMake(self.view.bounds.size.width - 130, 510 * self.view.bounds.size.height/568 , 120, 34);//0211
     UIImage *use_photo = [UIImage imageNamed:@"use_photo.png"];  // ボタンにする画像を生成する
     [usePhoto setBackgroundImage:use_photo forState:UIControlStateNormal];  // 画像をセットする
     //[usePhoto setTitle:@"UsePhoto" forState:UIControlStateNormal];
@@ -116,7 +118,9 @@
     [self.view addSubview:usePhoto];
     
     UIButton *retake = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    retake.frame = CGRectMake(10, 510, 120, 34);
+//0211    retake.frame = CGRectMake(10, 510, 120, 34);
+    
+    retake.frame = CGRectMake(10, 510 * self.view.bounds.size.height/568, 120, 34);//0211(iphone5Sを基準にして同比率で拡大)
     UIImage *img_retake = [UIImage imageNamed:@"retake.png"];  // ボタンにする画像を生成する
     [retake setBackgroundImage:img_retake forState:UIControlStateNormal];  // 画像をセットする
     //[retake setTitle:@"Retake" forState:UIControlStateNormal];
@@ -126,8 +130,8 @@
 
     
     present_imageView = [[UIImageView alloc] init];
-    present_imageView.frame = CGRectMake(0, 60, 320, 420);
-
+//0211    present_imageView.frame = CGRectMake(0, 60, 320, 420);
+    present_imageView.frame = CGRectMake(0, 60 * self.view.bounds.size.height/568, 320 * self.view.bounds.size.width/320, 420 * self.view.bounds.size.height/568);//0211(iphone5Sを基準にして同比率で拡大)
     
 }
 

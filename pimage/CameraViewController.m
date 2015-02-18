@@ -55,7 +55,6 @@
 }
 
 
-
 //1124
 -(void)openCamera{
     
@@ -68,13 +67,17 @@
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.showsCameraControls = NO;
-        imagePickerController.view.frame = CGRectMake(0, 64, 320, 426);//(カメラ画面サイズ426)
-//       [[self.view superview] addSubview:imagePickerController.view];
+//0211        imagePickerController.view.frame = CGRectMake(0, 64, 320, 426);//(カメラ画面サイズ426)
+ 
+imagePickerController.view.frame = CGRectMake(0, 64 * self.view.bounds.size.height/568, 320 * self.view.bounds.size.height/320, 426 * self.view.bounds.size.height/568);//0211
+        //       [[self.view superview] addSubview:imagePickerController.view];
         [self.view addSubview:imagePickerController.view];
  
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn.frame = CGRectMake(124, 490, 72, 75);
+//0211        btn.frame = CGRectMake(124, 490, 72, 75);
+        
+        btn.frame = CGRectMake(self.view.bounds.size.width/2 - 36, 490 * self.view.bounds.size.height/568, 72, 75);//0211
         UIImage *take_photo = [UIImage imageNamed:@"take_photo.png"];  // ボタンにする画像を生成する
         [btn setBackgroundImage:take_photo forState:UIControlStateNormal];  // 画像をセットする
        // [btn setTitle:@"takepicture" forState:UIControlStateNormal];
@@ -84,7 +87,9 @@
       
         
         UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn2.frame = CGRectMake(220, 25, 90, 30);
+//0211        btn2.frame = CGRectMake(220, 25, 90, 30);
+        
+        btn2.frame = CGRectMake(self.view.bounds.size.width - 100, 25 * self.view.bounds.size.height/568, 90, 30);//0211
         UIImage *save = [UIImage imageNamed:@"save.png"];  // ボタンにする画像を生成する
         [btn2 setBackgroundImage:save forState:UIControlStateNormal];  // 画像をセットする
         //[btn2 setTitle:@"Cancel" forState:UIControlStateNormal];
