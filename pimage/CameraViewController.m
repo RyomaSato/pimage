@@ -67,9 +67,11 @@
         imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         imagePickerController.delegate = self;
         imagePickerController.showsCameraControls = NO;
-//0211        imagePickerController.view.frame = CGRectMake(0, 64, 320, 426);//(カメラ画面サイズ426)
- 
-imagePickerController.view.frame = CGRectMake(0, 64 * self.view.bounds.size.height/568, 320 * self.view.bounds.size.height/320, 426 * self.view.bounds.size.height/568);//0211
+//        imagePickerController.view.frame = CGRectMake(0, 64, 320, 426);//(カメラ画面サイズ426)
+        
+        NSLog(@"%f",self.view.bounds.size.height);
+        NSLog(@"%f",self.view.bounds.size.width);
+imagePickerController.view.frame = CGRectMake(0, 64 * self.view.bounds.size.height/568, self.view.bounds.size.width, 426 * self.view.bounds.size.height/568);//0211
         //       [[self.view superview] addSubview:imagePickerController.view];
         [self.view addSubview:imagePickerController.view];
  

@@ -12,7 +12,7 @@
 #import "InfoViewController.h"//1218
 
 @interface ViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIAlertViewDelegate>{
-
+    
     BOOL _takePictureFlag;
     UIImagePickerController *imagePickerController;//1124
     ImageViewController *imageViewController;//1124

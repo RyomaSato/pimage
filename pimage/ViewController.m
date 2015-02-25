@@ -34,7 +34,7 @@
     folder = [defaults dictionaryForKey:@"folder"];
     
     [self.documentListTableView reloadData];
-    
+       
     //ToolBarを表示する
     [self.navigationController setToolbarHidden:NO animated:NO];//1113
     
@@ -42,13 +42,16 @@
 
 
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    //_documentListTableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - 44);//0218
     
     _documentListTableView.delegate = self;
     _documentListTableView.dataSource = self;
+    
     
     //navigationbar
     self.navigationController.navigationBar.barTintColor= [UIColor colorWithRed:0.925 green:0.490 blue:0.380 alpha:1.0];
@@ -397,14 +400,14 @@
     if([gestureRecognizer state] == UIGestureRecognizerStateBegan){
         NSLog(@"longtapbegan");
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Renaming"
-                                                          message:nil
-                                                         delegate:self
-                                                cancelButtonTitle:@"Cancel"
-                                                otherButtonTitles:@"OK", nil];
-        
-        [message setAlertViewStyle:UIAlertViewStylePlainTextInput];//１行で実装
-        [message show];
+//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Renaming"
+//                                                          message:nil
+//                                                         delegate:self
+//                                                cancelButtonTitle:@"Cancel"
+//                                                otherButtonTitles:@"OK", nil];
+//        
+//        [message setAlertViewStyle:UIAlertViewStylePlainTextInput];//１行で実装
+//        [message show];
         
         // UILongPressGestureRecognizerからlocationInView:を使ってタップした場所のCGPointを取得する
         CGPoint longPressPoint = [gestureRecognizer locationInView:self.documentListTableView];
@@ -413,6 +416,22 @@
         // NSIndexPathを利用して、cellForRowAtIndexPath:で該当でUITableViewCellを取得する
         documentcell = [self.documentListTableView cellForRowAtIndexPath:longtapIndex];///ユーザデフォルト更新
 
+        NSLog(@"%ld",(long)longtapIndex.row);
+        
+        if (documentcell) {
+            
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Renaming"
+                                                              message:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                                    otherButtonTitles:@"OK", nil];
+        
+            [message setAlertViewStyle:UIAlertViewStylePlainTextInput];//１行で実装
+            [message show];
+        
+        }else{
+        }
+        
     }else if([gestureRecognizer state] == UIGestureRecognizerStateEnded){
          NSLog(@"longtapended");
         

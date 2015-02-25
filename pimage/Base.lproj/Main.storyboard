@@ -17,12 +17,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-Fa-3Qc">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-Fa-3Qc">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DQz-Fa-3Qc" secondAttribute="trailing" id="BHc-aB-5H8"/>
+                            <constraint firstItem="DQz-Fa-3Qc" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="VXn-jm-hHL"/>
+                            <constraint firstItem="DQz-Fa-3Qc" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="mUv-cQ-vvu"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="DQz-Fa-3Qc" secondAttribute="bottom" constant="44" id="nlr-NB-F1a"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="W7v-Gv-L11"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
